@@ -49,15 +49,12 @@ function convertStringToNumbers(input) {
 }
 
 function getFirstAndLastNumber(input) {
-    if (input.length === 0) {
-        return 0;
-    }
     var numbers = input.split("")
     var sum = numbers[0] + numbers[numbers.length - 1]
     return parseInt(sum)
 }
 
-const sum = text.split("\n").map(convertStringToNumbers).reduce((prev, current) => {
+const sum = text.trim().split("\n").map(convertStringToNumbers).reduce((prev, current) => {
     return prev + getFirstAndLastNumber(current)
 }, 0)
 
