@@ -1,5 +1,3 @@
-// Right answer is: 54634
-
 const file = Bun.file("../input/day1.txt");
 const text = await file.text();
 
@@ -22,4 +20,6 @@ const sum = text.split("\n").reduce((prev, current) => {
     return prev + getNumbers(current)
 }, 0)
 
+// SPOILER ALERT:
+// Right answer is: 54634
 console.log(sum)
