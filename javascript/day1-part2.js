@@ -49,6 +49,10 @@ function convertStringToNumbers(input) {
 }
 
 function getFirstAndLastNumber(input) {
+    if (input.length === 0) {
+        return 0;
+    }
+    var numbers = input.split("")
     var sum = numbers[0] + numbers[numbers.length - 1]
     return parseInt(sum)
 }
