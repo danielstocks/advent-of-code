@@ -1,4 +1,4 @@
-// Right answer is: 53855
+
 const file = Bun.file("../input/day1.txt");
 const text = await file.text();
 
@@ -48,26 +48,15 @@ function convertStringToNumbers(input) {
     return output;
 }
 
-const cleanText = text.split("\n").map(convertStringToNumbers)
-
-function getNumbers(input) {
-    if (input.length === 0) {
-        return 0;
-    }
-    var numbers = input.split("").filter((currentValue) => {
-        if (!isNaN(parseInt(currentValue))) {
-            return currentValue;
-        } else {
-            return false
-        }
-    })
+function getFirstAndLastNumber(input) {
     var sum = numbers[0] + numbers[numbers.length - 1]
-    //console.log(sum)
     return parseInt(sum)
 }
 
-const sum = cleanText.reduce((prev, current) => {
-    return prev + getNumbers(current)
+const sum = text.split("\n").map(convertStringToNumbers).reduce((prev, current) => {
+    return prev + getFirstAndLastNumber(current)
 }, 0)
 
+// SPOILER ALERT:
+// Right answer is: 53855
 console.log(sum)
