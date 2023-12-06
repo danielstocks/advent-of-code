@@ -6,9 +6,12 @@ let getNumbers = input => {
   } else {
     let numbers =
       input
-      ->Js.String2.split("")
-      ->Js.Array2.filter(value => {
-        !Js.Float.isNaN(Js.Float.fromString(value))
+      ->String.split("")
+      ->Array.filter(value => {
+        switch Int.fromString(value) {
+        | None => false
+        | Some(_) => true
+        }
       })
 
     let part1 = switch numbers[0] {
@@ -16,14 +19,14 @@ let getNumbers = input => {
     | Some(value) => value
     }
 
-    let part2 = switch numbers[Js.Array2.length(numbers) - 1] {
+    let part2 = switch numbers[Array.length(numbers) - 1] {
     | None => ""
     | Some(value) => value
     }
 
     let sum = part1 ++ part2
 
-    switch Belt.Int.fromString(sum) {
+    switch Int.fromString(sum) {
     | None => 0
     | Some(value) => value
     }
@@ -32,9 +35,9 @@ let getNumbers = input => {
 
 let sum =
   text
-  ->Js.String2.split("\n")
-  ->Js.Array2.reduce((prev, current) => {
+  ->String.split("\n")
+  ->Array.reduce(0, (prev, current) => {
     prev + getNumbers(current)
-  }, 0)
+  })
 
 Js.log(sum)

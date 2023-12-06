@@ -20,16 +20,13 @@ Sum: 8
 
 Solution:
 --
-Step 1 convert array to:
+Step 1: Parse text, create array of games, sets, and colors (RGB)
 [
-    // R, G, B
-    // Game 1 (three sets)
     [[4,1,0],[0,2,2],[3,6,0]]
-    // Game 5 (two sets)
     [[6, 1], [3, 2], [1, 2]]
 ]
 
-Step 2: convert array to:
+Step 2: Select max value from each array.
 [
     4,2,6,
     1,3,4
