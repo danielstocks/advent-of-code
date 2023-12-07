@@ -1,10 +1,14 @@
 
 
 /* 
-Check if number has surrounding symbol:
+
+
+Check if number has surrounding * symbol:
 - Row above (-1) start -1, end + 1
 - Same row (0) start -1, end + 1
 - Row below (+1) start -1, end + 1
+
+Save position of star symbol on number
 
 l = line, s=start, e=end, v=value
 
@@ -20,14 +24,15 @@ function isNumber(input) {
     return !isNaN(parseInt(input))
 }
 
-function isSymbol(input) {
-    return input !== "." && isNaN(parseInt(input))
+function isStar(input) {
+    return input === "*"
 }
 
 
-function hasAdjacentSymbol(line, start, end, lines) {
+function findAdjacentStarSymbols(line, start, end, lines) {
 
-    let numberOfAdjacentSymbols = 0;
+
+    let result = []
 
     let currentLineScan = line - 1;
     let endLineScan = line + 1;
@@ -42,15 +47,16 @@ function hasAdjacentSymbol(line, start, end, lines) {
 
                 //console.log("scanning line", currentLineScan, "scanning char", currentCharScan, "character", char);
 
-                if (char && isSymbol(char)) {
-                    //console.log(char)
-                    return true;
+                if (char && isStar(char)) {
+                    return currentLineScan + "-" + currentCharScan
                 }
             }
             currentCharScan++;
         }
         currentLineScan++;
     }
+    return result
+
 }
 
 export function run(input) {
@@ -62,7 +68,7 @@ export function run(input) {
     //console.log(lines);
 
     var numberIndex = []
-    //let totalNumberCount = 0;
+
 
     // Build number index
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
@@ -84,25 +90,65 @@ export function run(input) {
                 }
 
                 numberIndex.push([lineIndex, charIndex, charIndex + (count - 1), fullNumber])
-                //totalNumberCount++
+
                 charIndex += count
             }
         }
     }
 
-   //console.log(totalNumberCount);
 
     // Iterate through number index
-    numberIndex = numberIndex.filter((number) => {
+    numberIndex = numberIndex.map((number) => {
 
         const line = number[0];
         const start = number[1];
         const end = number[2]
 
-        const check = hasAdjacentSymbol(line, start, end, lines);
         //console.log("number", number, "has adjacent symbol?", check ? "yes" : "no")
-        return check;
+
+        return { number: parseInt(number[3]), starPositions: findAdjacentStarSymbols(line, start, end, lines) }
     })
 
-    return numberIndex.reduce((prev, current) => { return prev + parseInt(current[3]) }, 0)
+    numberIndex = numberIndex.filter((number) => {
+        return number.starPositions.length > 0
+    })
+
+    //console.log(numberIndex);
+
+    const newShit = {}
+    numberIndex.forEach((number) => {
+        if (newShit[number.starPositions]) {
+            newShit[number.starPositions].push(number.number)
+        } else {
+            newShit[number.starPositions] = [number.number]
+        }
+    })
+
+
+    let sum = 0;
+
+    //console.log(newShit)
+    Object.keys(newShit).forEach(key => {
+
+        if (newShit[key].length > 1) {
+
+            //console.log(key, newShit[key])
+
+            sum += newShit[key].reduce((prev, current) => {
+                //console.log(prev, current)
+                return prev * current
+            }, 1)
+        }
+    })
+
+    //console.log(sum)
+
+    return sum;
+
+
 }
+
+
+//console.log("Result:", run(testInput), "Expected:", 467835);
+
+// console.log("Result:", run(text), "Expected:", 73201705);

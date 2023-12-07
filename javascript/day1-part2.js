@@ -1,20 +1,17 @@
-
-const file = Bun.file("../input/day1.txt");
-const text = await file.text();
+const numberMap = {
+    "zero": "0",
+    "one": "1",
+    "two": "2",
+    "three": "3",
+    "four": "4",
+    "five": "5",
+    "six": "6",
+    "seven": "7",
+    "eight": "8",
+    "nine": "9"
+};
 
 function convertStringToNumbers(input) {
-    const numberMap = {
-        "zero": "0",
-        "one": "1",
-        "two": "2",
-        "three": "3",
-        "four": "4",
-        "five": "5",
-        "six": "6",
-        "seven": "7",
-        "eight": "8",
-        "nine": "9"
-    };
 
     let output = "";
     let i = 0;
@@ -33,7 +30,9 @@ function convertStringToNumbers(input) {
         for (const [word, number] of Object.entries(numberMap)) {
             if (input.startsWith(word, i)) {
                 output += number;
-                i += word.length - 1; // Move back one position after the number word
+                 // Move back one position after the number word
+                 // to find combined number words like "eightwo"
+                i += word.length - 1;
                 found = true;
                 break;
             }
@@ -54,10 +53,8 @@ function getFirstAndLastNumber(input) {
     return parseInt(sum)
 }
 
-const sum = text.trim().split("\n").map(convertStringToNumbers).reduce((prev, current) => {
-    return prev + getFirstAndLastNumber(current)
-}, 0)
-
-// SPOILER ALERT:
-// Right answer is: 53855
-console.log(sum)
+export function run(input) {
+    return input.trim().split("\n").map(convertStringToNumbers).reduce((prev, current) => {
+        return prev + getFirstAndLastNumber(current)
+    }, 0)
+}

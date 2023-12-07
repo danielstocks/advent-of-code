@@ -1,15 +1,9 @@
-# javascript
+# Advent Of Code 2023 - JavaScript
 
-To install dependencies:
+Requires `bun` runtime: https://bun.sh
 
-```bash
-bun install
-```
-
-To run:
+To test:
 
 ```bash
-bun run index.js
+bun test day1.test.js
 ```
-
-This project was created using `bun init` in bun v1.0.14. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

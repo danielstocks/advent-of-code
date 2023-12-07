@@ -1,5 +1,4 @@
 {
   "name": "javascript-advent-of-code",
-  "module": "index.js",
   "type": "module"
 }
