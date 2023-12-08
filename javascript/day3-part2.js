@@ -1,7 +1,4 @@
-
-
 /* 
-
 
 Check if number has surrounding * symbol:
 - Row above (-1) start -1, end + 1
@@ -17,6 +14,7 @@ l = line, s=start, e=end, v=value
 [ 0, 0, 2, "467" ] => Check rows -1, 0, 1 | Chars: -1,0,1,2,3
 [ 0, 5, 7, "114" ] => Check rows  1, 0, 1 | Chars:  4,5,6,7,8
 [ 2, 2, 3, "35" ]  => Check rows  1, 2, 3 | Chars:  1,2,3,4
+
 */
 
 
@@ -31,9 +29,7 @@ function isStar(input) {
 
 function findAdjacentStarSymbols(line, start, end, lines) {
 
-
     let result = []
-
     let currentLineScan = line - 1;
     let endLineScan = line + 1;
     while (currentLineScan <= endLineScan) {
@@ -44,9 +40,6 @@ function findAdjacentStarSymbols(line, start, end, lines) {
 
             if (currentCharScan > -1 && currentLineScan > -1 && currentLineScan < lines.length) {
                 var char = lines[currentLineScan][currentCharScan]
-
-                //console.log("scanning line", currentLineScan, "scanning char", currentCharScan, "character", char);
-
                 if (char && isStar(char)) {
                     return currentLineScan + "-" + currentCharScan
                 }
@@ -56,7 +49,6 @@ function findAdjacentStarSymbols(line, start, end, lines) {
         currentLineScan++;
     }
     return result
-
 }
 
 export function run(input) {
@@ -65,15 +57,10 @@ export function run(input) {
         return x.split("")
     })
 
-    //console.log(lines);
-
     var numberIndex = []
-
 
     // Build number index
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-
-
 
         var chars = lines[lineIndex]
         for (let charIndex = 0; charIndex < chars.length; charIndex++) {
@@ -96,24 +83,17 @@ export function run(input) {
         }
     }
 
-
     // Iterate through number index
     numberIndex = numberIndex.map((number) => {
-
         const line = number[0];
         const start = number[1];
         const end = number[2]
-
-        //console.log("number", number, "has adjacent symbol?", check ? "yes" : "no")
-
         return { number: parseInt(number[3]), starPositions: findAdjacentStarSymbols(line, start, end, lines) }
     })
 
     numberIndex = numberIndex.filter((number) => {
         return number.starPositions.length > 0
     })
-
-    //console.log(numberIndex);
 
     const newShit = {}
     numberIndex.forEach((number) => {
@@ -124,31 +104,18 @@ export function run(input) {
         }
     })
 
-
     let sum = 0;
 
-    //console.log(newShit)
     Object.keys(newShit).forEach(key => {
-
         if (newShit[key].length > 1) {
-
-            //console.log(key, newShit[key])
-
             sum += newShit[key].reduce((prev, current) => {
-                //console.log(prev, current)
                 return prev * current
             }, 1)
         }
     })
 
-    //console.log(sum)
-
     return sum;
-
-
 }
 
-
-//console.log("Result:", run(testInput), "Expected:", 467835);
-
+// console.log("Result:", run(testInput), "Expected:", 467835);
 // console.log("Result:", run(text), "Expected:", 73201705);

@@ -1,6 +1,7 @@
+/*
 
+Thinking notes/rationale
 
-/* 
 Check if number has surrounding symbol:
 - Row above (-1) start -1, end + 1
 - Same row (0) start -1, end + 1
@@ -27,8 +28,6 @@ function isSymbol(input) {
 
 function hasAdjacentSymbol(line, start, end, lines) {
 
-    let numberOfAdjacentSymbols = 0;
-
     let currentLineScan = line - 1;
     let endLineScan = line + 1;
     while (currentLineScan <= endLineScan) {
@@ -40,10 +39,7 @@ function hasAdjacentSymbol(line, start, end, lines) {
             if (currentCharScan > -1 && currentLineScan > -1 && currentLineScan < lines.length) {
                 var char = lines[currentLineScan][currentCharScan]
 
-                //console.log("scanning line", currentLineScan, "scanning char", currentCharScan, "character", char);
-
                 if (char && isSymbol(char)) {
-                    //console.log(char)
                     return true;
                 }
             }
@@ -59,15 +55,10 @@ export function run(input) {
         return x.split("")
     })
 
-    //console.log(lines);
-
     var numberIndex = []
-    //let totalNumberCount = 0;
 
     // Build number index
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-
-
 
         var chars = lines[lineIndex]
         for (let charIndex = 0; charIndex < chars.length; charIndex++) {
@@ -84,13 +75,10 @@ export function run(input) {
                 }
 
                 numberIndex.push([lineIndex, charIndex, charIndex + (count - 1), fullNumber])
-                //totalNumberCount++
                 charIndex += count
             }
         }
     }
-
-   //console.log(totalNumberCount);
 
     // Iterate through number index
     numberIndex = numberIndex.filter((number) => {
@@ -100,7 +88,7 @@ export function run(input) {
         const end = number[2]
 
         const check = hasAdjacentSymbol(line, start, end, lines);
-        //console.log("number", number, "has adjacent symbol?", check ? "yes" : "no")
+
         return check;
     })
 

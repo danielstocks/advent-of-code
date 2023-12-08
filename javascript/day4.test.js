@@ -13,6 +13,7 @@ Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
 Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
 `
 
+
 describe("day 4", () => {
 
     test("part 1 - test input", () => {
@@ -23,4 +24,12 @@ describe("day 4", () => {
         expect(run(input)).toBe(24848)
     });
 
+
+    test("part2 - test input", () => {
+        expect(run2(testInput)).toBe(30)
+    });
+
+    test("part2 - real input", () => {
+        expect(run2(input)).toBe(7258152)
+    });
 })
