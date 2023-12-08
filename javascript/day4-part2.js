@@ -1,31 +1,16 @@
-function getWinningNumbers(card) {
-    const [winninNumbers, playerNumbers] = card
-    return playerNumbers.filter((number) =>
-        winninNumbers.indexOf(number) !== -1
-    )
+function getWinningCards(cards) {
+    return cards.map(card => {
+        // Filter out winning numbers and calculate score
+        const [winninNumbers, playerNumbers] = card
+        const matches = playerNumbers.filter((number) =>
+            winninNumbers.indexOf(number) !== -1
+        )
+        card[2] = matches;
+        return card
+    })
 }
 
 export function run(input) {
-
-    let x = 0;
-
-    function drilling(originalCards, newCards) {
-
-        if (newCards.length == 0) {
-            return
-        }
-        x += newCards.length
-
-
-        newCards.forEach((card, i) => {
-            const winningNumbers = getWinningNumbers(card)
-            if (winningNumbers.length == 0) return;
-            const index = originalCards.indexOf(card);
-            const nextNewCards = originalCards.slice(index + 1, winningNumbers.length + index + 1)
-            drilling(originalCards, nextNewCards)
-
-        });
-    }
 
     const cards = input.trim("").split("\n").map(card => {
         return card.split(/[:\|]+/).slice(1).map(numbers => (
@@ -33,7 +18,23 @@ export function run(input) {
         ))
     })
 
-    drilling(cards, cards)
+    const winningCardsWithNumbers = getWinningCards(cards);
 
+    let x = 0;
+
+    function drill(newCards) {
+        if (newCards.length == 0) {
+            return
+        }
+        x += newCards.length
+        newCards.forEach((card, i) => {
+            const index = cards.indexOf(card);
+            const winningNumbers = winningCardsWithNumbers[index][2]
+            if (winningNumbers.length == 0) return;
+            const nextNewCards = cards.slice(index + 1, winningNumbers.length + index + 1)
+            drill(nextNewCards)
+        });
+    }
+    drill(cards)
     return x
 }

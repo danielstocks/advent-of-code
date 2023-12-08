@@ -31,5 +31,7 @@ describe("day 4", () => {
 
     test("part2 - real input", () => {
         expect(run2(input)).toBe(7258152)
+        // original benchmark 3712.96ms //
+        // improved benchmark 302.69ms //
     });
 })
