@@ -47,4 +47,8 @@ describe("day 5", () => {
         expect(run(testInput)).toBe(35)
     });
 
+    test("part 1 - input", () => {
+        //expect(run(input)).toBe(35)
+    });
+
 })
