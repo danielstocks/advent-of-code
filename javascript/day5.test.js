@@ -1,6 +1,8 @@
 import { expect, test, describe } from "bun:test";
 import { run } from './day5'
+import { run as runRewrite } from './day5-rewrite'
 import { run as run2 } from './day5-part2'
+import { run as run2Rewrite } from './day5-part2-rewrite'
 const file = Bun.file("../input/day5.txt");
 const input = await file.text();
 
@@ -40,8 +42,12 @@ humidity-to-location map:
 56 93 4
 `
 
-
 describe("day 5", () => {
+
+
+    test("part 1 rewrite - test input", () => {
+        expect(runRewrite(testInput)).toBe(35)
+    });
 
     test("part 1 - test input", () => {
         expect(run(testInput)).toBe(35)
@@ -50,5 +56,22 @@ describe("day 5", () => {
     test("part 1 - input", () => {
         expect(run(input)).toBe(309796150)
     });
+
+    test("part 1 rewrite - input", () => {
+        expect(runRewrite(input)).toBe(309796150)
+    });
+
+    test("part 2 - test input", () => {
+        //expect(run2(testInput)).toBe(46)
+    });
+
+    test("part 2 rewrite - test input", () => {
+        expect(run2Rewrite(testInput)).toBe(46)
+    });
+
+    test("part 2 rewrite - input", () => {
+        expect(run2Rewrite(input)).toBe(50716416)
+    });
+
 
 })
