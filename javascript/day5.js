@@ -9,6 +9,10 @@ function createMaprange(input) {
 
 function seekAndFind(start, end, find) {
 
+    if(find < start || find > end) {
+        return -1;
+    }
+
     var index = 0;
 
     for (var s = start; s < end; s++) {
@@ -26,7 +30,9 @@ function getDestinationFromSource(sourceToFind, map) {
     let rowIndexFound = - 1
 
     map.every((row, rowIndex) => {
+        //console.time('test');
         sourceIndexFound = seekAndFind(row[1], row[1] + row[2], sourceToFind)
+        //console.timeEnd('test');
         if (sourceIndexFound !== -1) {
             rowIndexFound = rowIndex
             return false;
