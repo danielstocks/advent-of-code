@@ -116,6 +116,3 @@ export function run(input) {
 
     return sum;
 }
-
-// console.log("Result:", run(testInput), "Expected:", 467835);
-// console.log("Result:", run(text), "Expected:", 73201705);

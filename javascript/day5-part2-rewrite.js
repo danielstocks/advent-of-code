@@ -36,7 +36,6 @@ export function run(input) {
                         overlapStart - source + destination,
                         overlapEnd - source + destination
                     ]
-                    console.log(match)
 
                     if (overlapStart > start) {
                         seeds.push([start, overlapStart])
