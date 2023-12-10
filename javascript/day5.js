@@ -13,8 +13,9 @@ function seekAndFind(start, end, find) {
         return -1;
     }
 
-    var index = 0;
+    console.log(start - end)
 
+    var index = 0;
     for (var s = start; s < end; s++) {
         if (find == s) {
             return index
