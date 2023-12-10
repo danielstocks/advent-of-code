@@ -20,9 +20,7 @@ function getDestinationFromSource(sourceToFind, map) {
     let rowIndexFound = - 1
 
     map.every((row, rowIndex) => {
-        //console.time('test');
         sourceIndexFound = seekAndFind(row[1], row[1] + row[2], sourceToFind)
-        //console.timeEnd('test');
         if (sourceIndexFound !== -1) {
             rowIndexFound = rowIndex
             return false;
@@ -32,22 +30,9 @@ function getDestinationFromSource(sourceToFind, map) {
     })
 
     if (rowIndexFound !== -1) {
-
         const row = map[rowIndexFound]
         const start = row[0];
-        const end = row[0] + row[2]
-        let index = 0
-        let destinationValue;
-
-        for (var s = start; s < end; s++) {
-            if (sourceIndexFound == index) {
-                destinationValue = s;
-            }
-            index++
-        }
-
-        return destinationValue;
-
+        return start + sourceIndexFound
     } else {
         return sourceToFind
     }
@@ -62,7 +47,6 @@ function getSeedLocation(maps, seed) {
     let temperature = getDestinationFromSource(light, maps["light-temperature"]);
     let humidity = getDestinationFromSource(temperature, maps["temperature-humidity"]);
     let location = getDestinationFromSource(humidity, maps["humidity-location"]);
-    console.log("found location:", location)
     return location
 }
 
