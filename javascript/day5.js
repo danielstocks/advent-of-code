@@ -8,21 +8,10 @@ function createMaprange(input) {
 }
 
 function seekAndFind(start, end, find) {
-
-    if(find < start || find > end) {
+    if (find < start || find > end) {
         return -1;
     }
-
-    console.log(start - end)
-
-    var index = 0;
-    for (var s = start; s < end; s++) {
-        if (find == s) {
-            return index
-        }
-        index++
-    }
-    return -1
+    return Math.abs(start - find)
 }
 
 function getDestinationFromSource(sourceToFind, map) {
