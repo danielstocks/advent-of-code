@@ -24,12 +24,11 @@ describe("day 4", () => {
         expect(run(input)).toBe(24848)
     });
 
-
-    test("part2 - test input", () => {
+    test("part 2 - test input", () => {
         expect(run2(testInput)).toBe(30)
     });
 
-    test("part2 - real input", () => {
+    test("part 2 - real input", () => {
         expect(run2(input)).toBe(7258152)
     });
 })
