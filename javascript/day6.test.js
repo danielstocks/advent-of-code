@@ -26,5 +26,4 @@ describe("day 6", () => {
     test("part 2 - input", () => {
         expect(run2(input)).toBe(33875953)
     })
-
 })
