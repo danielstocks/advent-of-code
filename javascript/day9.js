@@ -4,7 +4,7 @@ function getDiffs(sequence, step = 0) {
     for (var i = 1; i < sequence[step].length; i++) {
         let diff = sequence[step][i] - sequence[step][i - 1]
         diffs.push(diff)
-        if(diff !== 0) {
+        if (diff !== 0) {
             allZero = false
         }
     }
@@ -27,7 +27,10 @@ function extrapolate(diff) {
 }
 
 export function run(input) {
-    return input.trim("").split("\n").map((n) => (n.split(" ").map(parseFloat))).reduce((prev, next) => {
-        return prev + extrapolate(getDiffs([next]))
-    }, 0)
+    return input.trim("")
+        .split("\n")
+        .map((n) => (n.split(" ").map(parseFloat)))
+        .reduce((prev, next) => (
+            prev + extrapolate(getDiffs([next]))
+        ), 0)
 }
