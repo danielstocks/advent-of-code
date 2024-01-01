@@ -88,7 +88,10 @@ export function run(input) {
         const line = number[0];
         const start = number[1];
         const end = number[2]
-        return { number: parseInt(number[3]), starPositions: findAdjacentStarSymbols(line, start, end, lines) }
+        return {
+            number: parseInt(number[3]),
+            starPositions: findAdjacentStarSymbols(line, start, end, lines)
+        }
     })
 
     numberIndex = numberIndex.filter((number) => {

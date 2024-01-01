@@ -13,15 +13,23 @@ const testInput = `
 `
 
 const testInput2 = `
-..F7.
-.FJ|.
-SJ.L7
-|F--J   
-LJ...
+7-F7-
+.FJ|7
+SJLL7
+|F--J
+LJ.LJ
 `
 
 describe("day 10", () => {
     test("part 1 - test input", () => {
         expect(run(testInput)).toBe(4)
+    });
+
+    test("part 1 - test input2", () => {
+        expect(run(testInput2)).toBe(8)
+    });
+
+    test("part 1 - input", () => {
+       expect(run(input)).toBe(6690)
     });
 })
