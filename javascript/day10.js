@@ -16,43 +16,35 @@ function getDirectionsToCheck(pipe, prevDirection, rowIndex, tiles) {
                 return false;
             }
         }
-
         if (direction === "south") {
             if (prevDirection === "north" || rowIndex > (tiles.length - 1)) {
                 return false;
             }
         }
-
         if (direction === "east") {
             if (prevDirection === "west") {
                 return false;
             }
         }
-
         if (direction === "west") {
             if (prevDirection === "east") {
                 return false;
             }
         }
-
         return direction
     })
 }
 
 function getStartingPosition(tiles) {
-    let startingPosition = false;
     for (var rowIndex = 0; rowIndex < tiles.length; rowIndex++) {
         let row = tiles[rowIndex]
         for (var colIndex = 0; colIndex < row.length; colIndex++) {
             let col = tiles[rowIndex][colIndex]
             if (col === "S") {
-                startingPosition = [rowIndex, colIndex]
-                break;
+                return [rowIndex, colIndex]
             }
         }
-        if (startingPosition) { break; }
     }
-    return startingPosition
 }
 
 export function run(input) {
