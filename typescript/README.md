@@ -1,15 +1,9 @@
-# typescript
+# Advent Of Code 2023 - TypeScript
 
-To install dependencies:
+Requires `bun` runtime: https://bun.sh
 
-```bash
-bun install
-```
-
-To run:
+To run tests:
 
 ```bash
-bun run index.ts
+bun test
 ```
-
-This project was created using `bun init` in bun v1.0.14. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

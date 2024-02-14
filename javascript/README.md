@@ -2,7 +2,7 @@
 
 Requires `bun` runtime: https://bun.sh
 
-To test:
+To run tests:
 
 ```bash
 bun test

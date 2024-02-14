@@ -1,6 +1,6 @@
 import { expect, test, describe } from "bun:test";
-import { run } from './day7'
-import { getType, run as run2 } from './day7-part2'
+import { run } from './day7-1'
+import { getType, run as run2 } from './day7-2'
 const file = Bun.file("../input/day7.txt");
 const input = await file.text();
 
@@ -49,7 +49,7 @@ describe("day 7", () => {
     test("part 1 - test input", () => {
         expect(run(testInput)).toBe(6440)
     });
-    
+
     test("part 1 - input", () => {
         expect(run(input)).toBe(253933213)
     });
@@ -65,11 +65,11 @@ describe("day 7", () => {
     test("part 2 - test input 2", () => {
         expect(run2(testInput2)).toBe(6839)
     });
-    
+
     test("part 2 - input", () => {
         expect(run2(input)).toBe(253473930)
     });
-   
+
 
     describe("get type unit test", () => {
 
@@ -150,7 +150,7 @@ describe("day 7", () => {
         test("high card", () => {
             expect(getType("23456")).toBe(7)
         })
-        
+
 
     })
 })

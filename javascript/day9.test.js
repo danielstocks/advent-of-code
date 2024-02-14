@@ -1,6 +1,6 @@
 import { expect, test, describe } from "bun:test";
-import { run } from './day9'
-import { run as run2 } from './day9-part2'
+import { run } from './day9-1'
+import { run as run2 } from './day9-2'
 const file = Bun.file("../input/day9.txt");
 const input = await file.text();
 
