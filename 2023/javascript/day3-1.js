@@ -1,22 +1,3 @@
-/*
-
-Thinking notes/rationale
-
-Check if number has surrounding symbol:
-- Row above (-1) start -1, end + 1
-- Same row (0) start -1, end + 1
-- Row below (+1) start -1, end + 1
-
-l = line, s=start, e=end, v=value
-
-  l  s  e  v
------------------     
-[ 0, 0, 2, "467" ] => Check rows -1, 0, 1 | Chars: -1,0,1,2,3
-[ 0, 5, 7, "114" ] => Check rows  1, 0, 1 | Chars:  4,5,6,7,8
-[ 2, 2, 3, "35" ]  => Check rows  1, 2, 3 | Chars:  1,2,3,4
-*/
-
-
 function isNumber(input) {
     return !isNaN(parseInt(input))
 }
@@ -51,7 +32,7 @@ function hasAdjacentSymbol(line, start, end, lines) {
 
 export function run(input) {
 
-    var lines = input.trim("").split("\n").map((x) => {
+    var lines = input.trim().split("\n").map((x) => {
         return x.split("")
     })
 
