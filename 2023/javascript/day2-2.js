@@ -2,7 +2,7 @@ export function run(input) {
     let sum = 0;
 
     // Iterate through each game
-    const data = input.trim("").split("\n").map((value, gameIndex) => {
+    const data = input.trim().split("\n").map((value) => {
 
         const redValues = []
         const greenValues = []
@@ -12,7 +12,7 @@ export function run(input) {
         value.split(":").slice(1)[0].split(";").forEach((value) => {
 
             // Iterate through each color
-            value.trim("").split(", ").forEach(color => {
+            value.trim().split(", ").forEach(color => {
 
                 if (color.includes("red")) {
                     redValues.push(parseInt(color))
