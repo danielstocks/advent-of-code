@@ -2,7 +2,6 @@ type cards = number[][][];
 
 function getWinningCards(cards: cards) {
   return cards.map((card) => {
-    // Filter out winning numbers and calculate score
     const [winninNumbers, playerNumbers] = card;
     const matches = playerNumbers.filter(
       (number: number) => winninNumbers.indexOf(number) !== -1
@@ -30,14 +29,13 @@ export function run(input: string) {
 
   const winningCardsWithNumbers = getWinningCards(cards);
 
-  let x = 0;
-
-  function drill(newCards: cards) {
+  // Recursive function to count the number of "copies" of cards won
+  function countCardCopies(newCards: cards, count: number): number {
     if (newCards.length == 0) {
-      return;
+      return count;
     }
-    x += newCards.length;
-    newCards.forEach((card, i) => {
+    count += newCards.length;
+    newCards.forEach((card) => {
       const index = cards.indexOf(card);
       const winningNumbers = winningCardsWithNumbers[index][2];
       if (winningNumbers.length == 0) return;
@@ -45,9 +43,10 @@ export function run(input: string) {
         index + 1,
         winningNumbers.length + index + 1
       );
-      drill(nextNewCards);
+      count = countCardCopies(nextNewCards, count);
     });
+    return count;
   }
-  drill(cards);
-  return x;
+
+  return countCardCopies(cards, 0);
 }
