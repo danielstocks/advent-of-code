@@ -15,8 +15,8 @@ export function run(input: string) {
   const cards = input
     .trim()
     .split("\n")
-    .map((card) => {
-      return card
+    .map((card) =>
+      card
         .split(/[:\|]+/)
         .slice(1)
         .map((numbers) =>
@@ -24,8 +24,8 @@ export function run(input: string) {
             .replace(/^\s+|\s+$|\s+(?=\s)/g, "")
             .split(" ")
             .map((str) => parseInt(str, 10))
-        );
-    });
+        )
+    );
 
   const winningCardsWithNumbers = getWinningCards(cards);
 
