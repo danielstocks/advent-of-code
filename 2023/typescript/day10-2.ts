@@ -10,7 +10,7 @@ const points: {
   w: [0, -1],
 };
 
-const tiles: {
+const tilePoints: {
   [key: string]: pos[];
 } = {
   "|": [points.s, points.n],
@@ -51,12 +51,14 @@ function getStartingPosition(grid: string[][]): [number, number] {
 
 function getPipePath(grid: grid, startingPosition: pos) {
   let currentPosition = startingPosition;
-  let direction = "";
+  let direction: pos = [0, 0];
   let pipePath: pos[] = [];
 
   // Run loop until we are back at starting position.
   // For each iteration path find by checking if it's
   // possible to move north, east, south or west
+  // while keeping track of direction we came from
+  // so we don't go back and forth
   while (
     !(
       currentPosition[0] === startingPosition[0] &&
@@ -67,41 +69,45 @@ function getPipePath(grid: grid, startingPosition: pos) {
     pipePath.push([currentPosition[0], currentPosition[1]]);
 
     let [rowIndex, colIndex] = currentPosition;
-    let newDirections = tiles[grid[rowIndex][colIndex]];
+
+    let possibleDirections = diffArraysOfArrays(
+      tilePoints[grid[rowIndex][colIndex]],
+      [direction]
+    );
 
     if (
       rowIndex > 0 &&
-      direction !== "south" &&
-      intersectArraysOfArrays(newDirections, [points.n]).length &&
-      intersectArraysOfArrays(tiles[grid[rowIndex - 1][colIndex]], [points.s])
-        .length
+      intersectArraysOfArrays(possibleDirections, [points.n]).length &&
+      intersectArraysOfArrays(tilePoints[grid[rowIndex - 1][colIndex]], [
+        points.s,
+      ]).length
     ) {
-      direction = "north";
+      direction = points.s;
       currentPosition = [rowIndex - 1, colIndex];
     } else if (
-      direction !== "west" &&
-      intersectArraysOfArrays(newDirections, [points.e]).length &&
-      intersectArraysOfArrays(tiles[grid[rowIndex][colIndex + 1]], [points.w])
-        .length
+      intersectArraysOfArrays(possibleDirections, [points.e]).length &&
+      intersectArraysOfArrays(tilePoints[grid[rowIndex][colIndex + 1]], [
+        points.w,
+      ]).length
     ) {
-      direction = "east";
+      direction = points.w;
       currentPosition = [rowIndex, colIndex + 1];
     } else if (
       rowIndex < grid.length - 1 &&
-      direction !== "north" &&
-      intersectArraysOfArrays(newDirections, [points.s]).length &&
-      intersectArraysOfArrays(tiles[grid[rowIndex + 1][colIndex]], [points.n])
-        .length
+      intersectArraysOfArrays(possibleDirections, [points.s]).length &&
+      intersectArraysOfArrays(tilePoints[grid[rowIndex + 1][colIndex]], [
+        points.n,
+      ]).length
     ) {
-      direction = "south";
+      direction = points.n;
       currentPosition = [rowIndex + 1, colIndex];
     } else if (
-      direction !== "east" &&
-      intersectArraysOfArrays(newDirections, [points.w]).length &&
-      intersectArraysOfArrays(tiles[grid[rowIndex][colIndex - 1]], [points.e])
-        .length
+      intersectArraysOfArrays(possibleDirections, [points.w]).length &&
+      intersectArraysOfArrays(tilePoints[grid[rowIndex][colIndex - 1]], [
+        points.e,
+      ]).length
     ) {
-      direction = "west";
+      direction = points.e;
       currentPosition = [rowIndex, colIndex - 1];
     }
   }
@@ -123,9 +129,10 @@ function replaceStartingTile(
   let prevTile = startingPosition.map(
     (element, index) => element - pipePath[pipePath.length - 1][index]
   );
-  for (let tile in tiles) {
+  for (let tile in tilePoints) {
     if (
-      intersectArraysOfArrays(tiles[tile], [prevTile, nextTile]).length === 2
+      intersectArraysOfArrays(tilePoints[tile], [prevTile, nextTile]).length ===
+      2
     ) {
       startingPipe = tile;
       break;
