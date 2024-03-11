@@ -1,46 +1,26 @@
-// Refactor to use "Set.prototype.difference()"
-// and Set.prototype./intersection()
+type pos = [number, number];
+type grid = string[][];
 
-const pipeDirections: {
-  [key: string]: string[];
+const points: {
+  [key: string]: pos;
 } = {
-  ".": [],
-  "|": ["south", "north"],
-  "-": ["east", "west"],
-  F: ["south", "east"],
-  J: ["north", "west"],
-  "7": ["south", "west"],
-  L: ["north", "east"],
-  S: ["north", "east", "south", "west"],
+  n: [1, 0],
+  e: [0, 1],
+  s: [-1, 0],
+  w: [0, -1],
 };
 
-const x: {
-  [key: string]: [number, number][];
+const tiles: {
+  [key: string]: pos[];
 } = {
-  "|": [
-    [-1, 0],
-    [1, 0],
-  ],
-  "-": [
-    [0, -1],
-    [0, 1],
-  ],
-  F: [
-    [-1, 0],
-    [0, -1],
-  ],
-  J: [
-    [1, 0],
-    [0, 1],
-  ],
-  "7": [
-    [-1, 0],
-    [0, 1],
-  ],
-  L: [
-    [1, 0],
-    [0, -1],
-  ],
+  "|": [points.s, points.n],
+  "-": [points.e, points.w],
+  F: [points.s, points.e],
+  J: [points.n, points.w],
+  "7": [points.s, points.w],
+  L: [points.n, points.e],
+  S: [points.n, points.e, points.s, points.w],
+  ".": [],
 };
 
 function intersectArraysOfArrays(arr1: number[][], arr2: number[][]) {
@@ -56,11 +36,11 @@ function diffArraysOfArrays(
   return arr1.filter((item) => !setArr2.has(JSON.stringify(item)));
 }
 
-function getStartingPosition(tiles: string[][]): [number, number] {
-  for (var rowIndex = 0; rowIndex < tiles.length; rowIndex++) {
-    let row = tiles[rowIndex];
+function getStartingPosition(grid: string[][]): [number, number] {
+  for (var rowIndex = 0; rowIndex < grid.length; rowIndex++) {
+    let row = grid[rowIndex];
     for (var colIndex = 0; colIndex < row.length; colIndex++) {
-      let col = tiles[rowIndex][colIndex];
+      let col = grid[rowIndex][colIndex];
       if (col === "S") {
         return [rowIndex, colIndex];
       }
@@ -69,140 +49,110 @@ function getStartingPosition(tiles: string[][]): [number, number] {
   throw new Error("Starting position not found");
 }
 
-function getTilePath(tiles: string[][], startingPosition: [number, number]) {
+function getPipePath(grid: grid, startingPosition: pos) {
   let currentPosition = startingPosition;
   let direction = "";
-  let path: [number, number][] = [];
+  let pipePath: pos[] = [];
 
+  // Run loop until we are back at starting position.
+  // For each iteration path find by checking if it's
+  // possible to move north, east, south or west
   while (
     !(
       currentPosition[0] === startingPosition[0] &&
       currentPosition[1] === startingPosition[1] &&
-      path.length !== 0
+      pipePath.length !== 0
     )
   ) {
-    path.push([currentPosition[0], currentPosition[1]]);
+    pipePath.push([currentPosition[0], currentPosition[1]]);
 
     let [rowIndex, colIndex] = currentPosition;
-    let directions = pipeDirections[tiles[rowIndex][colIndex]];
+    let newDirections = tiles[grid[rowIndex][colIndex]];
 
     if (
-      directions.includes("north") &&
       rowIndex > 0 &&
       direction !== "south" &&
-      pipeDirections[tiles[rowIndex - 1][colIndex]].includes("south")
+      intersectArraysOfArrays(newDirections, [points.n]).length &&
+      intersectArraysOfArrays(tiles[grid[rowIndex - 1][colIndex]], [points.s])
+        .length
     ) {
       direction = "north";
       currentPosition = [rowIndex - 1, colIndex];
-      continue;
-    }
-
-    if (
-      directions.includes("east") &&
+    } else if (
       direction !== "west" &&
-      pipeDirections[tiles[rowIndex][colIndex + 1]].includes("west")
+      intersectArraysOfArrays(newDirections, [points.e]).length &&
+      intersectArraysOfArrays(tiles[grid[rowIndex][colIndex + 1]], [points.w])
+        .length
     ) {
       direction = "east";
       currentPosition = [rowIndex, colIndex + 1];
-      continue;
-    }
-
-    if (
-      directions.includes("south") &&
-      rowIndex < tiles.length - 1 &&
+    } else if (
+      rowIndex < grid.length - 1 &&
       direction !== "north" &&
-      pipeDirections[tiles[rowIndex + 1][colIndex]].includes("north")
+      intersectArraysOfArrays(newDirections, [points.s]).length &&
+      intersectArraysOfArrays(tiles[grid[rowIndex + 1][colIndex]], [points.n])
+        .length
     ) {
       direction = "south";
       currentPosition = [rowIndex + 1, colIndex];
-      continue;
-    }
-
-    if (
-      directions.includes("west") &&
+    } else if (
       direction !== "east" &&
-      pipeDirections[tiles[rowIndex][colIndex - 1]].includes("east")
+      intersectArraysOfArrays(newDirections, [points.w]).length &&
+      intersectArraysOfArrays(tiles[grid[rowIndex][colIndex - 1]], [points.e])
+        .length
     ) {
       direction = "west";
       currentPosition = [rowIndex, colIndex - 1];
-      continue;
     }
   }
 
-  return path;
+  return pipePath;
 }
 
-export function run(input: string) {
-  // Create grid of tiles
-  let tiles = input
-    .trim()
-    .split("\n")
-    .map((row) => {
-      return row.split("");
-    });
-
-  const startingPosition = getStartingPosition(tiles);
-  const path = getTilePath(tiles, startingPosition);
-
-  // Figure out what kind of tile "S" is.
+// Figure out what kind of pipe the starting pipe is "S" is.
+// and replace it in grid with the actual pipe character
+function replaceStartingTile(
+  grid: grid,
+  pipePath: pos[],
+  startingPosition: pos
+) {
+  let startingPipe = "?";
   let nextTile = startingPosition.map(
-    (element, index) => element - path[1][index]
+    (element, index) => element - pipePath[1][index]
   );
   let prevTile = startingPosition.map(
-    (element, index) => element - path[path.length - 1][index]
+    (element, index) => element - pipePath[pipePath.length - 1][index]
   );
-
-  let s = "?";
-
-  for (let y in x) {
-    if (intersectArraysOfArrays(x[y], [prevTile, nextTile]).length === 2) {
-      s = y;
+  for (let tile in tiles) {
+    if (
+      intersectArraysOfArrays(tiles[tile], [prevTile, nextTile]).length === 2
+    ) {
+      startingPipe = tile;
       break;
     }
   }
-
-  // Set "S" to what s is
-  tiles = tiles.map((row) => row.map((char) => char.replaceAll("S", s)));
-
-  // Clean up garbage pipes
-  tiles = tiles.map((row, rowIndex) =>
-    row.map((col, colIndex) => {
-      let r = ".";
-      path.forEach((tile) => {
-        if (tile[0] == rowIndex && tile[1] == colIndex) {
-          r = col;
-        }
-      });
-      return r;
-    })
+  return grid.map((row) =>
+    row.map((char) => char.replaceAll("S", startingPipe))
   );
+}
 
-  //console.log(path);
-  //console.log(tiles.map((row) => row.join("")).join("\n"));
-  //console.log("\n");
+function getTilesOutsidePipe(grid: grid, pipePath: pos[]) {
+  let outside: pos[] = [];
 
-  let outside: [number, number][] = [];
-
-  tiles.forEach((row, rowIndex) => {
+  grid.forEach((row, rowIndex) => {
     let within = false;
     let up = false;
 
-    row.map((ch, colIndex) => {
-      if (ch == "|") {
+    row.map((char, colIndex) => {
+      if (char == "|") {
         within = !within;
-      } else if (ch == "-") {
-        // pass
-      } else if ("LF".includes(ch)) {
-        up = ch == "L";
-      } else if ("7J".includes(ch)) {
-        if (ch != (up ? "J" : "7")) {
+      } else if ("LF".includes(char)) {
+        up = char == "L";
+      } else if ("7J".includes(char)) {
+        if (char != (up ? "J" : "7")) {
           within = !within;
         }
         up = false;
-      } else if (ch == ".") {
-        // pass
-      } else {
-        throw new Error(`unexpected character (horizontal): ${ch}`);
       }
 
       if (!within) {
@@ -211,20 +161,40 @@ export function run(input: string) {
     });
   });
 
-  //console.log("outside", outside);
-  //console.log("path", path);
+  return diffArraysOfArrays(outside, pipePath);
+}
 
-  outside = diffArraysOfArrays(outside, path);
+function getCleanGrid(grid: grid, pipePath: pos[]) {
+  return grid.map((row, rowIndex) =>
+    row.map((col, colIndex) => {
+      let newChar = ".";
+      pipePath.forEach((tile) => {
+        if (tile[0] == rowIndex && tile[1] == colIndex) {
+          newChar = col;
+        }
+      });
+      return newChar;
+    })
+  );
+}
 
-  //console.log("\n");
+export function run(input: string) {
+  let grid = input
+    .trim()
+    .split("\n")
+    .map((row) => {
+      return row.split("");
+    });
 
-  // tiles.forEach((row, rowIndex) => {
-  //   row.forEach((col, colIndex) => {
-  //     let o = intersectArraysOfArrays([[rowIndex, colIndex]], outside);
-  //     process.stdout.write(o.length ? "#" : ".");
-  //   });
-  //   process.stdout.write("\n");
-  // });
-  //
-  return tiles.length * tiles[0].length - (outside.length + path.length);
+  const startingPosition = getStartingPosition(grid);
+  const pipePath = getPipePath(grid, startingPosition);
+  const cleanGrid = getCleanGrid(
+    replaceStartingTile(grid, pipePath, startingPosition),
+    pipePath
+  );
+  const outside = getTilesOutsidePipe(cleanGrid, pipePath);
+
+  return (
+    cleanGrid.length * cleanGrid[0].length - (outside.length + pipePath.length)
+  );
 }
