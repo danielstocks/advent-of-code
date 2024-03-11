@@ -29,6 +29,8 @@ export function run(input: string) {
 
   const winningCardsWithNumbers = getWinningCards(cards);
 
+  console.time("test");
+
   // Recursive function to count the number of "copies" of cards won
   function countCardCopies(newCards: cards, count: number): number {
     if (newCards.length == 0) {
