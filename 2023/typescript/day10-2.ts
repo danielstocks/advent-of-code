@@ -23,20 +23,17 @@ const tilePoints: {
   ".": [],
 };
 
-function intersectArraysOfArrays(arr1: number[][], arr2: number[][]) {
+function intersectArraysOfArrays(arr1: pos[], arr2: pos[]) {
   const setArr2 = new Set(arr2.map((item) => JSON.stringify(item)));
   return arr1.filter((item) => setArr2.has(JSON.stringify(item)));
 }
 
-function diffArraysOfArrays(
-  arr1: [number, number][],
-  arr2: [number, number][]
-) {
+function diffArraysOfArrays(arr1: pos[], arr2: pos[]) {
   const setArr2 = new Set(arr2.map((item) => JSON.stringify(item)));
   return arr1.filter((item) => !setArr2.has(JSON.stringify(item)));
 }
 
-function getStartingPosition(grid: string[][]): [number, number] {
+function getStartingPosition(grid: grid): pos {
   for (var rowIndex = 0; rowIndex < grid.length; rowIndex++) {
     let row = grid[rowIndex];
     for (var colIndex = 0; colIndex < row.length; colIndex++) {
