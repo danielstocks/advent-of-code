@@ -23,9 +23,11 @@ const tilePoints: {
   ".": [],
 };
 
+// Note: this "accidently" only works because we are passing arrays by reference
 function intersectArraysOfArrays(arr1: pos[], arr2: pos[]) {
-  const setArr2 = new Set(arr2.map((item) => JSON.stringify(item)));
-  return arr1.filter((item) => setArr2.has(JSON.stringify(item)));
+  return arr1.filter((item) => {
+    return arr2.includes(item);
+  });
 }
 
 function diffArraysOfArrays(arr1: pos[], arr2: pos[]) {
@@ -56,13 +58,7 @@ function getPipePath(grid: grid, startingPosition: pos) {
   // possible to move north, east, south or west
   // while keeping track of direction we came from
   // so we don't go back and forth
-  while (
-    !(
-      currentPosition[0] === startingPosition[0] &&
-      currentPosition[1] === startingPosition[1] &&
-      pipePath.length !== 0
-    )
-  ) {
+  do {
     pipePath.push([currentPosition[0], currentPosition[1]]);
 
     let [rowIndex, colIndex] = currentPosition;
@@ -107,7 +103,12 @@ function getPipePath(grid: grid, startingPosition: pos) {
       direction = points.e;
       currentPosition = [rowIndex, colIndex - 1];
     }
-  }
+  } while (
+    !(
+      currentPosition[0] === startingPosition[0] &&
+      currentPosition[1] === startingPosition[1]
+    )
+  );
 
   return pipePath;
 }
@@ -120,12 +121,17 @@ function replaceStartingTile(
   startingPosition: pos
 ) {
   let startingPipe = "?";
-  let nextTile = startingPosition.map(
-    (element, index) => element - pipePath[1][index]
-  );
-  let prevTile = startingPosition.map(
-    (element, index) => element - pipePath[pipePath.length - 1][index]
-  );
+
+  let prevTile: pos = [
+    startingPosition[0] - pipePath[pipePath.length - 1][0],
+    startingPosition[1] - pipePath[pipePath.length - 1][1],
+  ];
+
+  let nextTile: pos = [
+    startingPosition[0] - pipePath[1][0],
+    startingPosition[1] - pipePath[1][1],
+  ];
+
   for (let tile in tilePoints) {
     if (
       intersectArraysOfArrays(tilePoints[tile], [prevTile, nextTile]).length ===
