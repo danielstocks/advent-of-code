@@ -3,5 +3,5 @@
 To run tests:
 
 ```bash
-dune test
+dune exec ocaml
 ```
