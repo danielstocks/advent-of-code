@@ -9,13 +9,15 @@ let test_input = "
 3   3
 "
 
-let pair_sort (list1, list2) =
-  (List.sort compare list1, List.sort compare list2)
+let get_similarity_score(list1, list2) = 
+  List.fold_left (fun sum item -> 
+    sum + item * (list2
+      |> List.filter(fun n -> n = item)
+      |> List.length)
+  ) 0 list1
 
-let pair_to_list (list1, list2) =
-  List.combine list1 list2
-
-let run data = data
+let run data =
+  data
   (* Remove surrounding newlines *)
   |> String.trim
   (* Split each newline into list *)
@@ -31,9 +33,4 @@ let run data = data
   )
   (* Split, sort, and turn back to a list *)
   |> List.split
-  |> pair_sort
-  |> pair_to_list
-  (* Calculate distance between each pair *)
-  |> List.map(fun pair -> abs(snd(pair) - fst(pair)))
-  (* Sum distance *)
-  |> List.fold_left (+) 0 
+  |> get_similarity_score
