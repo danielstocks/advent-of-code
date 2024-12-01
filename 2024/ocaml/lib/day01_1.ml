@@ -22,14 +22,12 @@ let run data = data
   |> String.split_on_char '\n'
   (* Map through each line and create pairs. Eg. [[1,2],[3,4]] *)
   |> List.map (
-    fun line -> String.split_on_char ' ' line
+    fun line -> let list = String.split_on_char ' ' line
       |> List.filter (fun s -> s <> "")
-      |> List.map(fun s -> int_of_string s)
-    )
-  (* Map into pairs/tuples Eg. [(1,2),(3,4]] *)
-  |> List.map(fun list -> match list with
-    | [x; y] -> (x,y)
-    | _ -> failwith "input error"
+      |> List.map(fun s -> int_of_string s) in
+      match list with 
+        | [x; y] -> (x,y)
+        | _ -> failwith "input error"
   )
   (* Split, sort, and turn back to a list *)
   |> List.split
