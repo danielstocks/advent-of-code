@@ -23,7 +23,9 @@ let run data = data
   (* Map through each line and create pairs. Eg. [(1,2),(3,4)] *)
   |> List.map (
     fun line -> let list = String.split_on_char ' ' line
+      (* Filter out extra whitespace *)
       |> List.filter (fun s -> s <> "")
+      (* Create pairs *)
       |> List.map(fun s -> int_of_string s) in
       match list with 
         | [x; y] -> (x,y)
