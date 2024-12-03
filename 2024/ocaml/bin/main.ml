@@ -20,7 +20,6 @@ let () = Printf.printf "\nDay 01, Part 2, Real Result: %d" day01_2
 
 let () = print_endline ""
 
-
 (* 
    --- DAY TWO ---
 *)
@@ -41,4 +40,18 @@ let () = Printf.printf "\nDay 02, Part 2, Test Result: %d" day02_2_test
 let day02_2 = Ocaml.Day02_2.run Ocaml.Day02_2.input
 let () = Printf.printf "\nDay 02, Part 2, Real Result: %d" day02_2
 
-let () = print_endline "\n"
+let () = print_endline ""
+
+(* 
+   --- DAY THREE ---
+*)
+
+(* Right answer: 161 *)
+let day03_1_test = Ocaml.Day03_1.run Ocaml.Day03_1.test_input
+let () = Printf.printf "\nDay 03, Part 1, Test Result: %d" day03_1_test
+
+(* Right answer: 160672468 *)
+let day03_1 = Ocaml.Day03_1.run Ocaml.Day03_1.input
+let () = Printf.printf "\nDay 03, Part 1, Real Result: %d" day03_1
+
+let () = print_endline ""
