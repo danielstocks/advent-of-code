@@ -28,36 +28,33 @@ let rec is_safe_report
 
       (* Prev and current values are same? unsafe *)
       | Some prev, current, _ when prev == current -> 
-          if can_dampen_problem then begin
-              is_safe_report
-                ~can_dampen_problem: false 
-                ~prev:(Some prev)
-                ~direction: direction
-                xs
-            end
+          if can_dampen_problem then
+            is_safe_report
+              ~can_dampen_problem: false 
+              ~prev:(Some prev)
+              ~direction: direction
+              xs
           else
             false
 
       (* Change in either direction? unsafe *)
       | Some prev, current, Incr when prev > current ->
-          if can_dampen_problem then begin
-              is_safe_report
-                ~can_dampen_problem: false 
-                ~prev:(Some current)
-                ~direction: direction
-                xs
-            end
+          if can_dampen_problem then
+            is_safe_report
+              ~can_dampen_problem: false 
+              ~prev:(Some current)
+              ~direction: direction
+              xs
           else
             false
 
       | Some prev, current, Decr when prev < current ->
-          if can_dampen_problem then begin
-              is_safe_report
-                ~can_dampen_problem: false 
-                ~prev:(Some prev)
-                ~direction: direction
-                xs
-            end
+          if can_dampen_problem then
+            is_safe_report
+              ~can_dampen_problem: false 
+              ~prev:(Some prev)
+              ~direction: direction
+              xs
           else
             false
 
@@ -76,16 +73,14 @@ let rec is_safe_report
               ~direction: (if prev > current then Decr else Incr)
               xs
           else
-            if can_dampen_problem then begin
+            if can_dampen_problem then
               is_safe_report
                 ~can_dampen_problem: false 
-                ~prev:(Some prev)
+                ~prev:(Some current)
                 ~direction: direction
                 xs
-            end
-            else begin
+            else
               false
-          end
 
       (* Should never happen? *)
       | None, _, _-> failwith("can not have a direction w/o a prev value")
