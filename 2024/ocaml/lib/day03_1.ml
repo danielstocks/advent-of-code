@@ -1,9 +1,9 @@
 
 let input = File.read "../input/day03.txt"
 let test_input = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))"
+
 let extract_expressions = Re.(compile (seq [str "mul("; rep1 digit; str ","; rep1 digit; str ")"]))
 let extract_numbers = Re.(compile (seq [str "("; group (rep1 digit); str ","; group (rep1 digit); str ")"]))
-
 
 let extract_matches matches =
   List.map
