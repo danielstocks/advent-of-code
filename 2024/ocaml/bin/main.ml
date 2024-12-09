@@ -69,12 +69,18 @@ let () = print_endline ""
    --- DAY FOUR ---
 *)
 
+(* Load input *)
+let day04_input = Ocaml.File.read "../input/day04.txt"
+let day04_test_input = Ocaml.File.read "../input/day04_test.txt"
+
 (* Right answer: 18 *)
-let day04_1_test = Ocaml.Day04_1.run Ocaml.Day04_1.test_input
+let day04_1_test = Ocaml.Day04_1.run day04_test_input
 let () = Printf.printf "\nDay 04, Part 1, Test Result: %d" day04_1_test
 
 (* Right answer: 2549 *)
-let day04_1 = Ocaml.Day04_1.run Ocaml.Day04_1.input
-let () = Printf.printf "\nDay 04, Part 1, Real Result: %d" day04_1
+let day04_1 = Ocaml.Day04_1.run day04_input
+let () = Printf.printf "\nDay 04, Part 1, Real Result: %d" day04_1;
+
+assert (day04_1 = 2548)
 
 let () = print_endline ""

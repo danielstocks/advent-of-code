@@ -1,18 +1,3 @@
-let input = File.read "../input/day04.txt"
-
-let test_input = "
-MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX
-"
-
 let reverse_string string = string
   |> String.to_seq
   |> List.of_seq
@@ -56,7 +41,6 @@ let extract_diagonal data =
     |> Array.append inverted
     |> Array.to_list
     |> List.map(fun list -> String.concat "" list)
-
 
 let run data = 
   let input = data |> String.trim |> String.split_on_char '\n' in
