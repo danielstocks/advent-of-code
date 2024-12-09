@@ -66,11 +66,15 @@ let () = print_endline ""
 
 
 (* 
-   --- DAY THREE ---
+   --- DAY FOUR ---
 *)
 
 (* Right answer: 18 *)
 let day04_1_test = Ocaml.Day04_1.run Ocaml.Day04_1.test_input
 let () = Printf.printf "\nDay 04, Part 1, Test Result: %d" day04_1_test
+
+(* Right answer: 2549 *)
+let day04_1 = Ocaml.Day04_1.run Ocaml.Day04_1.input
+let () = Printf.printf "\nDay 04, Part 1, Real Result: %d" day04_1
 
 let () = print_endline ""
