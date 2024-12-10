@@ -1,14 +1,3 @@
-let input = File.read "../input/day01.txt"
-
-let test_input = "
-3   4
-4   3
-2   5
-1   3
-3   9
-3   3
-"
-
 let pair_sort (list1, list2) =
   (List.sort compare list1, List.sort compare list2)
 

@@ -1,14 +1,3 @@
-let input = File.read "../input/day01.txt"
-
-let test_input = "
-3   4
-4   3
-2   5
-1   3
-3   9
-3   3
-"
-
 let get_similarity_score(list1, list2) = 
   List.fold_left (fun sum item -> 
     sum + item * (list2
