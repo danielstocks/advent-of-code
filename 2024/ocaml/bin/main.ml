@@ -1,5 +1,5 @@
-let green = "\027[32m"  (* ansi escape code for green *)
-let reset = "\027[0m"(* reset to default color *)
+let reset = "\027[0m" (* reset to default color *)
+let green = "\027[32m" (* ansi escape code for green *)
 let red = "\027[31m" (* ansi escape code for red *)
 let run ~fn ~day ~part ~mode ~input ~result =
   let (output, time) = Ocaml.Benchmark.time_function fn input in
@@ -54,4 +54,5 @@ let () = run ~day:"04" ~part:"1" ~mode:"test" ~input:day04_test_input ~fn:Ocaml.
 let () = run ~day:"04" ~part:"1" ~mode:"actual" ~input:day04_input ~fn:Ocaml.Day04_1.run ~result:2549
 let () = run ~day:"04" ~part:"2" ~mode:"test" ~input:day04_test_input_2 ~fn:Ocaml.Day04_2.run ~result:9
 let () = run ~day:"04" ~part:"2" ~mode:"actual" ~input:day04_input ~fn:Ocaml.Day04_2.run ~result:0
+
 let () = print_endline ""
