@@ -10,7 +10,6 @@ let scan x y array size =
         cond1 && cond2
     | (_,_) -> false
 
-
 let run data =
   let input = data |> String.trim |> String.split_on_char '\n' in
   let size = List.length input in
@@ -26,5 +25,4 @@ let run data =
     done;
   done;
   !count
-
 

@@ -53,6 +53,14 @@ let day04_test_input_2 = Ocaml.File.read "../input/day04_test_2.txt"
 let () = run ~day:"04" ~part:"1" ~mode:"test" ~input:day04_test_input ~fn:Ocaml.Day04_1.run ~result:18
 let () = run ~day:"04" ~part:"1" ~mode:"actual" ~input:day04_input ~fn:Ocaml.Day04_1.run ~result:2549
 let () = run ~day:"04" ~part:"2" ~mode:"test" ~input:day04_test_input_2 ~fn:Ocaml.Day04_2.run ~result:9
-let () = run ~day:"04" ~part:"2" ~mode:"actual" ~input:day04_input ~fn:Ocaml.Day04_2.run ~result:0
+let () = run ~day:"04" ~part:"2" ~mode:"actual" ~input:day04_input ~fn:Ocaml.Day04_2.run ~result:2003
+let () = print_endline ""
 
+(* 
+  --- DAY FIVE ---
+*)
+let day05_test_input = Ocaml.File.read "../input/day05_test.txt"
+let day05_input = Ocaml.File.read "../input/day05.txt"
+let () = run ~day:"05" ~part:"1" ~mode:"test" ~input:day05_test_input ~fn:Ocaml.Day05_1.run ~result:143
+let () = run ~day:"05" ~part:"1" ~mode:"actual" ~input:day05_input ~fn:Ocaml.Day05_1.run ~result:5639
 let () = print_endline ""
