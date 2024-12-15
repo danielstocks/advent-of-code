@@ -38,19 +38,28 @@ let middle list =
   let mid = len / 2 in
   List.nth list mid
 
+let sort rules list = list |> List.sort(fun a b -> 
+  match Hashtbl.find_opt rules a with
+  | Some values when intersects [b] values -> -1
+  | _ -> 1
+)
+
 let run data = 
-  match split_on_double_newline (data |> String.trim) with 
+  let input = data |> String.trim in
+  match split_on_double_newline input with 
     | [rules; updates] -> 
-      updates
+      updates 
         |> String.split_on_char '\n'
-        |> List.fold_left (fun acc rule ->
-            let numbers = rule |> String.split_on_char ',' in
-            if is_valid_order
-              (numbers |> List.rev)
-              (rules |> rules_to_hash_table)
-            then
-              acc + (numbers |> middle |> int_of_string)
-            else
+        |> List.fold_left(fun acc numbers -> 
+            let numbers = numbers |> String.split_on_char ',' |> List.rev in
+            let rules = rules |> rules_to_hash_table in
+            if not (
+              is_valid_order
+                numbers
+                rules
+            ) then
+              acc + (numbers |> sort rules |> middle |> int_of_string)
+            else 
               acc
-         ) 0
-    | _ -> failwith "Invalid input - could not split rules & numbers" 
+        ) 0
+    | _ -> failwith "Invalid input numbers & rules" 
