@@ -6,7 +6,9 @@ let extract_expressions =
       seq [str "do()"];
     ]))
 
-let extract_numbers = Re.(compile (seq [str "("; group (rep1 digit); str ","; group (rep1 digit); str ")"]))
+let extract_numbers = Re.(compile 
+  (seq [str "("; group (rep1 digit); str ","; group (rep1 digit); str ")"])
+)
 
 let extract_matches matches =
   List.map
@@ -34,15 +36,12 @@ let run data =
     |> extract
     |> List.map(
          fun text -> 
-           let x = match Re.exec_opt extract_numbers text with 
+           match Re.exec_opt extract_numbers text with 
             | Some groups ->
                 let first_number = Re.Group.get groups 1 in
                 let second_number = Re.Group.get groups 2 in
-                (int_of_string first_number, int_of_string second_number)
-            | None -> (0,0)
-           in begin
-             fst(x) * snd(x)
-           end
+                int_of_string first_number * int_of_string second_number
+            | None -> 0
        )
     |> List.fold_left (+) 0 
 
