@@ -17,8 +17,6 @@ type position =
   | Start of (int * int)
   | None
 
-type direction = Up | Down | Left | Right
-
 let map_obstacles list =
   list |> List.mapi(fun x row ->
     row |> Seq.mapi(fun y char ->
@@ -36,44 +34,23 @@ let map_obstacles list =
     | None -> (positions, start)
   ) (Positions.empty, None)
 
+let directions = [| (-1, 0); (0, 1); (1, 0); (0, -1) |]
 
-let rec move ~position ~direction ~obstacles ~size ~moves = 
+let move ~position ~direction ~obstacles ~size ~moves =
   match position with
-    | Some (x, y) -> 
-      let next_pos =
-        match direction with
-        | Up -> (x - 1, y)
-        | Down -> (x + 1, y)
-        | Left -> (x, y - 1)
-        | Right -> (x, y + 1)
+  | Some (x, y) ->
+      let rec aux pos dir moves =
+        let (dx, dy) = directions.(dir) in
+        let next_pos = (fst pos + dx, snd pos + dy) in
+        match next_pos with
+        (* Out of bounds *)
+        | (x, y) when x < 0 || y < 0 || x >= size || y >= size -> moves
+        (* Collides with an obstacle: Change direction *)
+        | _ when Positions.mem next_pos obstacles -> aux pos ((dir + 1) mod 4) moves
+        (* Valid move: Continue moving *)
+        | _ -> aux next_pos dir (Positions.add next_pos moves)
       in
-      (* Check if the next position is out of bounds *)
-      if fst next_pos < 0 || snd next_pos < 0 || fst next_pos >= size || snd next_pos >= size then
-        moves
-      (* If no collision with obstacle *) 
-      else if Positions.is_empty (Positions.inter obstacles (Positions.of_list [next_pos])) then
-        let new_moves = Positions.add next_pos moves in
-        move
-          ~position:(Some next_pos)
-          ~direction
-          ~obstacles
-          ~size
-          ~moves:new_moves
-      (* Colllision with obstacle: set new direction *)
-      else
-        let new_direction =
-          match direction with
-          | Up -> Right
-          | Right -> Down
-          | Down -> Left
-          | Left -> Up
-        in
-        move
-          ~position: position
-          ~direction: new_direction
-          ~obstacles: obstacles
-          ~size: size 
-          ~moves: moves
+      aux (x, y) direction moves
   | None -> moves
 
 let run data =
@@ -83,13 +60,11 @@ let run data =
   | Some start -> 
       move 
         ~position: (Some start)
-        ~direction: Up
+        ~direction: 0
         ~obstacles: obstacles
         ~size: (grid |> List.length)
-        ~moves: Positions.empty
-      |> Positions.add start
+        ~moves: (Positions.singleton start)
       |> Positions.elements
       |> List.length
   | None -> failwith "No start position found"
-
 

@@ -74,4 +74,6 @@ let day06_test_input = Ocaml.File.read "../input/day06_test.txt"
 let day06_input = Ocaml.File.read "../input/day06.txt"
 let () = run ~day:"06" ~part:"1" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_1.run ~result:41
 let () = run ~day:"06" ~part:"1" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_1.run ~result:5461
+let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_2.run ~result:6
+let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:1836
 let () = print_endline ""
