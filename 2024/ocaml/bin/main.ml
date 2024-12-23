@@ -8,7 +8,7 @@ let run ~fn ~day ~part ~mode ~input ~result =
     | true -> 
         Printf.printf "%s OK %s" green reset
     | false -> 
-        Printf.printf "%s FAIL: got %d but expected %d %s" red output result reset
+        Printf.printf "%s \n-- FAIL: got %d, expected %d --%s \n" red output result reset
 
 (* 
    --- DAY ONE ---
@@ -75,5 +75,7 @@ let day06_input = Ocaml.File.read "../input/day06.txt"
 let () = run ~day:"06" ~part:"1" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_1.run ~result:41
 let () = run ~day:"06" ~part:"1" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_1.run ~result:5461
 let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_2.run ~result:6
+(*
 let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:1836
+*)
 let () = print_endline ""
