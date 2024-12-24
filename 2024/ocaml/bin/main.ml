@@ -10,6 +10,8 @@ let run ~fn ~day ~part ~mode ~input ~result =
     | false -> 
         Printf.printf "%s \n-- FAIL: got %d, expected %d --%s \n" red output result reset
 
+        (*
+
 (* 
    --- DAY ONE ---
 *)
@@ -71,9 +73,7 @@ let () = print_endline ""
 (* 
   --- DAY SIX ---
 *)
-
- let day06_input = Ocaml.File.read "../input/day06.txt" 
-
+let day06_input = Ocaml.File.read "../input/day06.txt" 
 let day06_test_input = Ocaml.File.read "../input/day06_test.txt"
 let () = run ~day:"06" ~part:"1" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_1.run ~result:41
 let () = run ~day:"06" ~part:"1" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_1.run ~result:5461
@@ -87,3 +87,14 @@ let test2 = "
 let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:test2 ~fn:Ocaml.Day06_2.run ~result:0
 let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:1836
 let () = print_endline ""
+
+*)
+
+(* 
+  --- DAY SEVEN ---
+*)
+let day07_test_input = Ocaml.File.read "../input/day07_test.txt"
+let day07_input = Ocaml.File.read "../input/day07.txt"
+let () = run ~day:"07" ~part:"1" ~mode:"test" ~input:day07_test_input ~fn:Ocaml.Day07_1.run ~result:3749
+let () = run ~day:"07" ~part:"1" ~mode:"actual" ~input:day07_input ~fn:Ocaml.Day07_1.run ~result:0
+
