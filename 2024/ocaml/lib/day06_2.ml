@@ -89,10 +89,9 @@ let rec get_moves ~move ~obstacles ~size ~moves =
           ~moves:new_moves
     | None -> moves
 
-
 let is_infinite_loop ~move ~obstacles ~size ~visited =
   let rec aux (x, y, direction) =
-    let next_x, next_y = next x y direction in
+    let (next_x, next_y) = next x y direction in
     (* Check if out of bounds *)
     if next_x < 0 || next_y < 0 || next_x >= size || next_y >= size then
       false
@@ -100,10 +99,11 @@ let is_infinite_loop ~move ~obstacles ~size ~visited =
     else if Hashtbl.mem visited (next_x, next_y, direction) then
       true
     (* Check for obstacle collision *)
-    else if Obstacles.mem (next_x, next_y) obstacles then
+    else if Obstacles.mem (next_x, next_y) obstacles then begin
       (* Change direction and recurse *)
       let new_direction = get_new_direction direction in
       aux (x, y, new_direction)
+    end
     (* Continue moving if no collision *)
     else begin
       (* Mark the current state as visited *)
@@ -115,9 +115,11 @@ let is_infinite_loop ~move ~obstacles ~size ~visited =
   | Some (x, y, direction) -> aux (x, y, direction)
   | None -> failwith "No move provided"
 
+
+let seen = Hashtbl.create 16000
+
 let run data =
   let grid = data |> String.trim |> make_grid in
-  print_int (grid |> List.length);
   let (obstacles, start_opt) = map_obstacles grid in
   match start_opt with
   | Some start ->
@@ -125,7 +127,7 @@ let run data =
         ~move: (Some start)
         ~obstacles: obstacles
         ~size: (grid |> List.length)
-        ~moves: (Moves.singleton start)
+        ~moves: (Moves.empty)
       |> Moves.elements
       |> List.fold_left(fun infinites move -> 
         let (new_x, new_y) = match move with
@@ -134,16 +136,23 @@ let run data =
           | (x, y, Right) -> (x, y + 1)
           | (x, y, Left) -> (x, y - 1)
         in
-        let new_obstacles = Obstacles.add (new_x, new_y) obstacles in
-        if is_infinite_loop
-          ~move: (Some start)
-          ~obstacles: new_obstacles
-          ~size: (grid |> List.length)
-          ~visited:(Hashtbl.create 3600)
-        then
-          Obstacles.add (new_x, new_y) infinites
-        else 
+        if Hashtbl.mem seen (new_x, new_y) then begin
           infinites
+        end else begin
+          Hashtbl.add seen (new_x, new_y) true;
+          let new_obstacles = Obstacles.add (new_x, new_y) obstacles in
+          if is_infinite_loop
+            ~move: (Some start)
+            ~obstacles: new_obstacles
+            ~size: (grid |> List.length)
+            ~visited:(Hashtbl.create 36000)
+          then begin
+            Obstacles.add (new_x, new_y) infinites
+          end else begin
+            infinites
+          end
+        end
+
       ) Obstacles.empty
       |> Obstacles.elements
       |> List.length

@@ -67,15 +67,23 @@ let () = run ~day:"05" ~part:"2" ~mode:"test" ~input:day05_test_input ~fn:Ocaml.
 let () = run ~day:"05" ~part:"2" ~mode:"actual" ~input:day05_input ~fn:Ocaml.Day05_2.run ~result:5273
 let () = print_endline ""
 
+
 (* 
   --- DAY SIX ---
 *)
+
+ let day06_input = Ocaml.File.read "../input/day06.txt" 
+
 let day06_test_input = Ocaml.File.read "../input/day06_test.txt"
-let day06_input = Ocaml.File.read "../input/day06.txt"
 let () = run ~day:"06" ~part:"1" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_1.run ~result:41
 let () = run ~day:"06" ~part:"1" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_1.run ~result:5461
 let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_2.run ~result:6
-(*
+let test2 = "
+##..
+...#
+....
+^.#.
+"
+let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:test2 ~fn:Ocaml.Day06_2.run ~result:0
 let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:1836
-*)
 let () = print_endline ""
