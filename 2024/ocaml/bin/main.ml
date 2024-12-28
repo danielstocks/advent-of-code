@@ -91,6 +91,12 @@ let () = run ~day:"07" ~part:"2" ~mode:"actual" ~input:day07_input ~fn:Ocaml.Day
 *)
 let day08_test_input = Ocaml.File.read "../input/day08_test.txt"
 let () = run ~day:"08" ~part:"1" ~mode:"test" ~input:day08_test_input ~fn:Ocaml.Day08_1.run ~result:14
+(*
+let day08_input = Ocaml.File.read "../input/day08.txt"
+let () = run ~day:"08" ~part:"1" ~mode:"actual" ~input:day08_input ~fn:Ocaml.Day08_1.run ~result:0
+*)
+
+(* 340 too high *)
 
 
 (* THE END *)

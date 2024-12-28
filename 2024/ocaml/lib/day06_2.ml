@@ -146,9 +146,9 @@ let run data =
             ~obstacles: new_obstacles
             ~size: (grid |> List.length)
             ~visited:(Hashtbl.create 36000)
-          then begin
+          then
             Obstacles.add (new_x, new_y) infinites
-          end else begin
+          else begin
             infinites
           end
         end
