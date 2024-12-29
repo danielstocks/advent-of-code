@@ -87,16 +87,15 @@ let () = run ~day:"07" ~part:"2" ~mode:"test" ~input:day07_test_input ~fn:Ocaml.
 let () = run ~day:"07" ~part:"2" ~mode:"actual" ~input:day07_input ~fn:Ocaml.Day07_2.run ~result:70597497486371
 
 (* 
-  --- DAY EIGHT
+  --- DAY EIGHT ---
 *)
 let day08_test_input = Ocaml.File.read "../input/day08_test.txt"
 let () = run ~day:"08" ~part:"1" ~mode:"test" ~input:day08_test_input ~fn:Ocaml.Day08_1.run ~result:14
-(*
 let day08_input = Ocaml.File.read "../input/day08.txt"
 let () = run ~day:"08" ~part:"1" ~mode:"actual" ~input:day08_input ~fn:Ocaml.Day08_1.run ~result:0
-*)
 
 (* 340 too high *)
+(* 351 too hight *)
 
 
 (* THE END *)
