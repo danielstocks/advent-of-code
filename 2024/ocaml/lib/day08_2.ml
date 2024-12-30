@@ -12,12 +12,19 @@ let string_to_char_list s =
 let within_bounds x y size =
   x > -1 && y > -1 && y < size && x < size 
 
-let place_antinode (x1, y1, x2, y2) = 
-  ((x1 - x2) + x1, (y1 - y2) + y1)
+let place_antinodes x1 y1 x2 y2 size = 
+  let rec aux x1 y1 x2 y2 list =
+    let (x, y) = ((x1 - x2) + x1, (y1 - y2) + y1) in
+      match within_bounds x y size with
+      | true -> aux x y x1 y1 (list @ [(x, y)])
+      | false -> list
+  in
+  aux x1 y1 x2 y2 [(x1, y1)]
 
 let run data = 
   let grid_lines = data |> String.trim |> String.split_on_char '\n' in
   let size = grid_lines |> List.length in
+  let _ = grid_lines |> List.length in
   let antennas = grid_lines 
     |> List.mapi(fun x line -> 
         line |> string_to_char_list |> List.mapi(fun y char ->
@@ -37,12 +44,10 @@ let run data =
         ))
         |> List.fold_left(fun acc opposite ->
           let (o_x, o_y, _) = opposite in
-          let (a_x, a_y) = place_antinode (x, y, o_x, o_y) in
-          let acc = if (within_bounds a_x a_y size) then acc @ [(a_x, a_y)] else acc in
-          let (a_x, a_y) = place_antinode (o_x, o_y, x, y) in
-          let acc = if (within_bounds a_x a_y size) then acc @ [(a_x, a_y)] else acc in
+          let acc  = acc @ place_antinodes x y o_x o_y size in
+          let acc  = acc @ place_antinodes o_x o_y x y size in
           acc
-        ) [] 
+        ) []
     )
     |> List.flatten
     |> Antinodes.of_list
