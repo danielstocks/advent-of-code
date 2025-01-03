@@ -10,9 +10,11 @@ let run ~fn ~day ~part ~mode ~input ~result =
     Printf.printf "\nDay %s, part %s, %s result: %d | Benchmark: %.2fms" day part mode output time;
     match output == result with
       | true -> 
-          Printf.printf "%s OK %s" green reset
+          Printf.printf "%s OK %s" green reset;
+          flush stdout
       | false -> 
-          Printf.printf "%s \n-- FAIL: got %d, expected %d --%s \n" red output result reset
+          Printf.printf "%s \n-- FAIL: got %d, expected %d --%s \n" red output result reset;
+          flush stdout
 
 (* 
    --- DAY ONE ---
@@ -74,7 +76,7 @@ let day06_test_input = Ocaml.File.read "../input/day06_test.txt"
 let () = run ~day:"06" ~part:"1" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_1.run ~result:41
 let () = run ~day:"06" ~part:"1" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_1.run ~result:5461
 let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_2.run ~result:6
-let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:183
+let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:1836
 
 (* 
   --- DAY SEVEN ---
@@ -101,13 +103,12 @@ let () = run ~day:"08" ~part:"2" ~mode:"test" ~input:day08_test_input_3 ~fn:Ocam
 let () = run ~day:"08" ~part:"2" ~mode:"actual" ~input:day08_input ~fn:Ocaml.Day08_2.run ~result:1032
 
 (* 
-  --- DAY Nine ---
+  --- DAY NINE ---
 *)
 let day09_test_input = Ocaml.File.read "../input/day09_test.txt"
 let day09_input = Ocaml.File.read "../input/day09.txt"
 let () = run ~day:"09" ~part:"1" ~mode:"test" ~input:day09_test_input ~fn:Ocaml.Day09_1.run ~result:1928
-let () = run ~day:"09" ~part:"1" ~mode:"actual" ~input:day09_input ~fn:Ocaml.Day09_1.run ~result:0
-(* 6320029754031 incorrect answer *)
+let () = run ~day:"09" ~part:"1" ~mode:"actual" ~input:day09_input ~fn:Ocaml.Day09_1.run ~result:6320029754031
 
 (* THE END *)
 let () = print_endline ""
