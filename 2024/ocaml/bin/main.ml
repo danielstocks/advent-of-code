@@ -104,7 +104,10 @@ let () = run ~day:"08" ~part:"2" ~mode:"actual" ~input:day08_input ~fn:Ocaml.Day
   --- DAY Nine ---
 *)
 let day09_test_input = Ocaml.File.read "../input/day09_test.txt"
+let day09_input = Ocaml.File.read "../input/day09.txt"
 let () = run ~day:"09" ~part:"1" ~mode:"test" ~input:day09_test_input ~fn:Ocaml.Day09_1.run ~result:1928
+let () = run ~day:"09" ~part:"1" ~mode:"actual" ~input:day09_input ~fn:Ocaml.Day09_1.run ~result:0
+(* 6320029754031 incorrect answer *)
 
 (* THE END *)
 let () = print_endline ""

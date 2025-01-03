@@ -1,18 +1,60 @@
-let string_to_char_list s =
-  List.init (String.length s) (String.get s)
+let string_to_int_list string =
+  List.init (String.length string) (fun index ->  
+    let char = String.get string index in
+    if char == '.' then 
+      -1 
+    else 
+      int_of_string (String.make 1 (char))
+  )
 
-let convert_to_blocks string = string 
-  |> string_to_char_list 
-  |> List.mapi(fun i char ->
-      let len = char |> String.make 1 |> int_of_string in
-      if i mod 2 == 0 then
-        List.init len (fun _ -> string_of_int (i / 2))
+let pop list =
+  match list with
+  | [] -> failwith "Can't pop empty list"
+  | x :: xs -> (x, xs)
+
+let diskmap_to_blocks list = list 
+  |> List.mapi(fun index int ->
+      if index mod 2 == 0 then
+        List.init int (fun _ -> index / 2)
       else
-        List.init len (fun _ -> ".")
+        List.init int (fun _ -> -1)
   )
   |> List.flatten
-  |> String.concat ""
 
-let run data =
-  let x = data |> String.trim |> convert_to_blocks in
-  x |> String.length
+let defrag_blocks blocks =
+  let free_space = blocks |> List.fold_left (fun (acc, index) block ->
+    if block == -1 then
+      (acc @ [index], index + 1)
+    else
+      (acc, index + 1)
+  ) ([], 0)
+  |> fst in
+
+  let array = blocks |> Array.of_list in
+  let _ = blocks 
+    |> List.rev 
+    |> List.fold_left(fun (free, block_index) block -> 
+      let (index, rest) = pop free in
+      if block != -1 && block_index > index then begin
+        array.(index) <- block;
+        array.(block_index) <- -1;
+        (rest, block_index - 1)
+      end else
+        (free, block_index - 1)
+    ) (free_space, (List.length blocks) - 1) in
+  array |> Array.to_list
+
+let calculate_checksum blocks =
+  blocks 
+    |> List.filter(fun block -> block > -1)
+    |> List.fold_left(fun (acc, index) block ->
+        (acc + block * index, index +1)
+    ) (0, 0) 
+    |> fst
+
+let run data = data
+    |> String.trim 
+    |> string_to_int_list
+    |> diskmap_to_blocks
+    |> defrag_blocks
+    |> calculate_checksum
