@@ -22,33 +22,41 @@ let diskmap_to_blocks list = list
   |> List.flatten
 
 let defrag_blocks blocks =
-  let free_space = blocks |> List.fold_left (fun (acc, index) block ->
-    if block == -1 then
-      (acc @ [index], index + 1)
-    else
-      (acc, index + 1)
-  ) ([], 0)
-  |> fst in
-
-  let array = blocks |> Array.of_list in
-  let _ = blocks 
-    |> List.rev 
-    |> List.fold_left(fun (free, block_index) block -> 
-      let (index, rest) = pop free in
-      if block != -1 && block_index > index then begin
-        array.(index) <- block;
-        array.(block_index) <- -1;
-        (rest, block_index - 1)
-      end else
-        (free, block_index - 1)
-    ) (free_space, (List.length blocks) - 1) in
-  array |> Array.to_list
+  let array = Array.of_list blocks in
+  let len = Array.length array in
+  let rec find_free idx =
+    if idx >= len then None
+    else if array.(idx) = -1 then Some idx
+    else find_free (idx + 1)
+  in
+  let rec find_used idx =
+    if idx < 0 then None 
+    else if array.(idx) <> -1 then Some idx
+    else find_used (idx - 1)
+  in
+  let rec defrag_step free_idx =
+    match find_free free_idx with
+    | None -> ()
+    | Some free_pos ->
+      match find_used (len - 1) with
+      | None -> ()
+      | Some used_pos ->
+        if free_pos < used_pos then begin
+          array.(free_pos) <- array.(used_pos);
+          array.(used_pos) <- -1;
+          defrag_step (free_pos + 1)
+        end
+  in
+  defrag_step 0;
+  array
 
 let calculate_checksum blocks =
   blocks 
-    |> List.filter(fun block -> block > -1)
-    |> List.fold_left(fun (acc, index) block ->
+    |> Array.fold_left(fun (acc, index) block ->
+      if block > -1 then
         (acc + block * index, index +1)
+      else
+        (acc, index+1)
     ) (0, 0) 
     |> fst
 
