@@ -74,7 +74,7 @@ let day06_test_input = Ocaml.File.read "../input/day06_test.txt"
 let () = run ~day:"06" ~part:"1" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_1.run ~result:41
 let () = run ~day:"06" ~part:"1" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_1.run ~result:5461
 let () = run ~day:"06" ~part:"2" ~mode:"test" ~input:day06_test_input ~fn:Ocaml.Day06_2.run ~result:6
-let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:1836
+let () = run ~day:"06" ~part:"2" ~mode:"actual" ~input:day06_input ~fn:Ocaml.Day06_2.run ~result:183
 
 (* 
   --- DAY SEVEN ---
@@ -99,6 +99,12 @@ let () = run ~day:"08" ~part:"1" ~mode:"actual" ~input:day08_input ~fn:Ocaml.Day
 let () = run ~day:"08" ~part:"2" ~mode:"test" ~input:day08_test_input ~fn:Ocaml.Day08_2.run ~result:34
 let () = run ~day:"08" ~part:"2" ~mode:"test" ~input:day08_test_input_3 ~fn:Ocaml.Day08_2.run ~result:9
 let () = run ~day:"08" ~part:"2" ~mode:"actual" ~input:day08_input ~fn:Ocaml.Day08_2.run ~result:1032
+
+(* 
+  --- DAY Nine ---
+*)
+let day09_test_input = Ocaml.File.read "../input/day09_test.txt"
+let () = run ~day:"09" ~part:"1" ~mode:"test" ~input:day09_test_input ~fn:Ocaml.Day09_1.run ~result:1928
 
 (* THE END *)
 let () = print_endline ""
