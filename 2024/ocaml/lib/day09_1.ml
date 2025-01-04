@@ -1,7 +1,7 @@
 let string_to_int_list string =
   List.init (String.length string) (fun index ->  
     let char = String.get string index in
-    if char == '.' then 
+    if char = '.' then 
       -1 
     else 
       int_of_string (String.make 1 (char))
@@ -14,7 +14,7 @@ let pop list =
 
 let diskmap_to_blocks list = list 
   |> List.mapi(fun index int ->
-      if index mod 2 == 0 then
+      if index mod 2 = 0 then
         List.init int (fun _ -> index / 2)
       else
         List.init int (fun _ -> -1)

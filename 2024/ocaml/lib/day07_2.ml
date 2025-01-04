@@ -11,6 +11,7 @@ let rec generate_combinations n =
 
 let find_expressions list = 
   list |> List.filter_map(fun (sum, numbers) -> 
+    (* Cache this? *)
     let found_expression = generate_combinations ((List.length numbers) - 1)
     |> List.exists(fun operators ->
       sum = List.fold_left2(fun acc operator number ->
