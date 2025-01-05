@@ -119,6 +119,7 @@ let day09_input = Ocaml.File.read "../input/day09.txt"
 let () = run ~day:"09" ~part:"1" ~mode:"test" ~input:day09_test_input ~fn:Ocaml.Day09_1.run ~result:1928
 let () = run ~day:"09" ~part:"1" ~mode:"real" ~input:day09_input ~fn:Ocaml.Day09_1.run ~result:6320029754031
 let () = run ~day:"09" ~part:"2" ~mode:"test" ~input:day09_test_input ~fn:Ocaml.Day09_2.run ~result:2858
+let () = run ~day:"09" ~part:"2" ~mode:"real" ~input:day09_input ~fn:Ocaml.Day09_2.run ~result:6347435485773
 
 (* THE END *)
 let () = print_endline ""
