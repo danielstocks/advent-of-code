@@ -34,6 +34,29 @@ let traverse_tree node grid =
   let _ = aux node grid in
   leafs.contents
 
+let string_to_char_list s =
+  List.init (String.length s) (String.get s)
+
+let run data = 
+  let grid = data 
+    |> String.trim 
+    |> String.split_on_char '\n'
+    |> List.map(fun row -> 
+      row 
+      |> string_to_char_list 
+      |> List.map(fun char -> 
+        String.make 1 char 
+        |> int_of_string
+      )
+      |> Array.of_list
+    )
+    |> Array.of_list
+  in
+  traverse_tree 
+    {x=5; y=6; height=0;} 
+    grid
+
+(*
 let tree = traverse_tree
   {x=5; y=6; height=0;} 
   [|
@@ -57,14 +80,10 @@ let tree2 = traverse_tree
   [|1; 1; 1; 9; 5; 5; 2|];
   [|1; 1; 1; 1; 5; 0; 1|];
 |]
-
 let () = print_string "\n"
 let () = print_int tree
 let () = print_int tree2
-
-(*
 let () = print_tree tree 0
 let () = print_tree tree2 0
 *)
 
-let run _ = 0
