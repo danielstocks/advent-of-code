@@ -125,7 +125,9 @@ let () = run ~day:"09" ~part:"2" ~mode:"real" ~input:day09_input ~fn:Ocaml.Day09
   --- DAY TEN ---
 *)
 let day10_test_input = Ocaml.File.read "../input/day10_test.txt"
+let day10_input = Ocaml.File.read "../input/day10.txt"
 let () = run ~day:"10" ~part:"1" ~mode:"test" ~input:day10_test_input ~fn:Ocaml.Day10_1.run ~result:36
+let () = run ~day:"10" ~part:"1" ~mode:"real" ~input:day10_input ~fn:Ocaml.Day10_1.run ~result:674
 
 
 (* THE END *)

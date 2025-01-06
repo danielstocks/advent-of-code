@@ -19,8 +19,7 @@ let is_valid_position (x, y) height grid =
   let (x_min, x_max, y_min, y_max) = (0, Array.length grid - 1, 0, Array.length grid.(0) - 1) in
   x >= x_min && x <= x_max && y >= y_min && y <= y_max && grid.(x).(y) = (height + 1)
 
-let traverse_tree node grid =
-  let leafs = ref 0 in
+let traverse_tree node grid leafs =
   let rec aux node grid = 
     let moves =
       List.filter (fun pos -> is_valid_position pos node.height grid) (possible_moves node.x node.y)
@@ -28,64 +27,47 @@ let traverse_tree node grid =
     let children = List.map(fun (x,y) -> 
       aux {x=x; y=y; height=node.height + 1} grid
     ) moves in
-    if List.length children == 0 then
-      (* need to only track leaf nodes that hasn's been seen before *)
-      leafs := leafs.contents + 1;
+    if List.length children == 0 && node.height = 9 && not (Hashtbl.mem leafs (node.x, node.y)) then
+      Hashtbl.add leafs (node.x, node.y) node.height;
     Node(node, children) in
-  let tree = aux node grid in
-  let () = print_tree tree 0 in
-  leafs.contents
+  let _ = aux node grid in
+  Hashtbl.length leafs
 
 let string_to_char_list s =
   List.init (String.length s) (String.get s)
 
-let run data = 
-  let grid = data 
-    |> String.trim 
-    |> String.split_on_char '\n'
-    |> List.map(fun row -> 
-      row 
-      |> string_to_char_list 
-      |> List.map(fun char -> 
-        String.make 1 char 
-        |> int_of_string
-      )
-      |> Array.of_list
+let make_grid input = input
+  |> String.trim 
+  |> String.split_on_char '\n'
+  |> List.map(fun row -> 
+    row 
+    |> string_to_char_list 
+    |> List.map(fun char -> 
+      String.make 1 char 
+      |> int_of_string
     )
     |> Array.of_list
-  in
-  traverse_tree 
-    {x=0; y=2; height=0;} 
-    grid
+  )
+  |> Array.of_list
 
-(*
-let tree = traverse_tree
-  {x=5; y=6; height=0;} 
-  [|
-  [|1; 0; 5; 1; 9; 1; 1|];
-  [|2; 5; 5; 1; 8; 1; 1|];
-  [|3; 1; 1; 1; 7; 1; 1|];
-  [|4; 5; 6; 7; 6; 5; 4|];
-  [|1; 1; 1; 8; 1; 1; 3|];
-  [|1; 1; 1; 9; 5; 5; 2|];
-  [|1; 1; 1; 1; 5; 0; 1|];
-|]
+let get_trailheads grid =
+  grid |> Array.mapi(fun x row -> 
+    let test = row 
+      |> Array.fold_left(fun (acc, y) height -> 
+        if height = 0 then begin
+          (acc @ [{ x=x; y=y; height=height; }], y + 1)
+        end else
+          (acc, y + 1)
+      ) ([], 0)  in
+    fst test
+  ) 
+  |> Array.to_list 
+  |> List.flatten
 
-let tree2 = traverse_tree
-  {x=0; y=1; height=0;} 
-  [|
-  [|1; 0; 5; 1; 9; 1; 1|];
-  [|2; 5; 5; 1; 8; 1; 1|];
-  [|3; 1; 1; 1; 7; 1; 1|];
-  [|4; 5; 6; 7; 6; 5; 4|];
-  [|1; 1; 1; 8; 1; 1; 3|];
-  [|1; 1; 1; 9; 5; 5; 2|];
-  [|1; 1; 1; 1; 5; 0; 1|];
-|]
-let () = print_string "\n"
-let () = print_int tree
-let () = print_int tree2
-let () = print_tree tree 0
-let () = print_tree tree2 0
-*)
-
+let run input = 
+  let grid = make_grid input in
+  get_trailheads grid
+  |> List.fold_left(fun acc node -> 
+      let result = traverse_tree node grid (Hashtbl.create 500) in
+      acc + result
+  ) 0
