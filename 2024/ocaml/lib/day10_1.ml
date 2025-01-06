@@ -29,9 +29,11 @@ let traverse_tree node grid =
       aux {x=x; y=y; height=node.height + 1} grid
     ) moves in
     if List.length children == 0 then
+      (* need to only track leaf nodes that hasn's been seen before *)
       leafs := leafs.contents + 1;
     Node(node, children) in
-  let _ = aux node grid in
+  let tree = aux node grid in
+  let () = print_tree tree 0 in
   leafs.contents
 
 let string_to_char_list s =
@@ -53,7 +55,7 @@ let run data =
     |> Array.of_list
   in
   traverse_tree 
-    {x=5; y=6; height=0;} 
+    {x=0; y=2; height=0;} 
     grid
 
 (*
