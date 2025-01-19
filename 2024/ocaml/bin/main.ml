@@ -40,9 +40,11 @@ let () = run ~day:"01" ~part:"2" ~mode:"real" ~input:day01_input ~fn:Ocaml.Day01
 *)
 let day02_input = Ocaml.File.read "../input/day02.txt"
 let day02_test_input = Ocaml.File.read "../input/day02_test.txt"
+let day02_test_input_2 = Ocaml.File.read "../input/day02_test_2.txt"
 let () = run ~day:"02" ~part:"1" ~mode:"test" ~input:day02_test_input ~fn:Ocaml.Day02_1.run ~result:2
 let () = run ~day:"02" ~part:"1" ~mode:"real" ~input:day02_input ~fn:Ocaml.Day02_1.run ~result:402
 let () = run ~day:"02" ~part:"2" ~mode:"test" ~input:day02_test_input ~fn:Ocaml.Day02_2.run ~result:4
+let () = run ~day:"02" ~part:"2" ~mode:"test" ~input:day02_test_input_2 ~fn:Ocaml.Day02_2.run ~result:16
 let () = run ~day:"02" ~part:"2" ~mode:"real" ~input:day02_input ~fn:Ocaml.Day02_2.run ~result:455
 
 (* 

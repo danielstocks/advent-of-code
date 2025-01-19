@@ -7,8 +7,7 @@ let string_to_int_list string =
       int_of_string (String.make 1 (char))
   )
 
-let pop list =
-  match list with
+let pop = function
   | [] -> failwith "Can't pop empty list"
   | x :: xs -> (x, xs)
 
