@@ -7,10 +7,9 @@ end
 
 module Positions = Set.Make(Position)
 
-let make_grid data =
-  data 
-    |> String.split_on_char '\n'
-    |> List.map(fun row -> row |> String.to_seq)
+let make_grid data = data 
+  |> String.split_on_char '\n'
+  |> List.map(fun row -> row |> String.to_seq)
 
 type position = 
   | Obstacle of (int * int)

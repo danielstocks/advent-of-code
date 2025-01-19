@@ -7,11 +7,6 @@ type node = {
 type tree =
   | Node of node * tree list
 
-let rec print_tree (Node (n, children)) indent =
-  Printf.printf "%sNode: (x: %d, y: %d, value: %d)\n"
-    (String.make indent ' ') n.x n.y n.height;
-  List.iter (fun child -> print_tree child (indent + 2)) children
-
 let possible_moves x y = 
   [ (x + 1, y); (x - 1, y); (x, y + 1); (x, y - 1) ]
 
