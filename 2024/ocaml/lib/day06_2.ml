@@ -89,36 +89,38 @@ let rec get_moves ~move ~obstacles ~size ~moves =
           ~moves:new_moves
     | None -> moves
 
-let is_infinite_loop ~move ~obstacles ~size ~visited =
+let is_infinite_loop ~move ~obstacles ~size =
+  let bits_per_position = 4 in
+  let bitset_size = size * size * bits_per_position in
+  let visited = Array.make bitset_size false in
+  let index (x, y, direction) =
+    let dir_idx = match direction with
+      | Up -> 0 | Down -> 1 | Left -> 2 | Right -> 3
+    in
+    (x * size + y) * bits_per_position + dir_idx
+  in
   let rec aux (x, y, direction) =
     let (next_x, next_y) = next x y direction in
-    (* Check if out of bounds *)
     if next_x < 0 || next_y < 0 || next_x >= size || next_y >= size then
       false
-    (* Detect if we've revisited the same position and direction *)
-    else if Hashtbl.mem visited (next_x, next_y, direction) then
-      true
-    (* Check for obstacle collision *)
-    else if Obstacles.mem (next_x, next_y) obstacles then begin
-      (* Change direction and recurse *)
-      let new_direction = get_new_direction direction in
-      aux (x, y, new_direction)
-    end
-    (* Continue moving if no collision *)
-    else begin
-      (* Mark the current state as visited *)
-      Hashtbl.add visited (next_x, next_y, direction) true;
-      aux (next_x, next_y, direction)
-    end
+    else
+      let idx = index (next_x, next_y, direction) in
+      if visited.(idx) then
+        true
+      else begin
+        visited.(idx) <- true;
+        if Obstacles.mem (next_x, next_y) obstacles then
+          aux (x, y, get_new_direction direction)
+        else
+          aux (next_x, next_y, direction)
+      end
   in
   match move with
   | Some (x, y, direction) -> aux (x, y, direction)
   | None -> failwith "No move provided"
 
-
-let seen = Hashtbl.create 16000
-
 let run data =
+  let seen = Hashtbl.create 1000 in
   let grid = data |> String.trim |> make_grid in
   let (obstacles, start_opt) = map_obstacles grid in
   match start_opt with
@@ -145,13 +147,11 @@ let run data =
             ~move: (Some start)
             ~obstacles: new_obstacles
             ~size: (grid |> List.length)
-            ~visited:(Hashtbl.create 36000)
           then
             Obstacles.add (new_x, new_y) infinites
           else
             infinites
         end
-
       ) Obstacles.empty
       |> Obstacles.elements
       |> List.length
