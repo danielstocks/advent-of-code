@@ -1,3 +1,15 @@
+let concat_numbers a b =
+  let rec pow10 n =
+    if n = 0 then 1
+    else 10 * pow10 (n-1)
+  in
+  let rec count_digits n =
+    if n = 0 then 0
+    else 1 + count_digits (n / 10)
+  in
+  let digits = count_digits b in
+  a * pow10 digits + b
+
 let rec generate_combinations n =
   if n = 0 then
     [[]]
@@ -10,13 +22,10 @@ let rec generate_combinations n =
     ]
 
 let find_expressions list = 
-  let cache = Hashtbl.create 26000 in
+  let cache = Hashtbl.create 2400 in
   let aux list cache = 
-
     list |> List.filter_map(fun (sum, numbers) -> 
-      
       let key = List.length numbers in
-
       let expressions = match Hashtbl.find_opt cache key with
       | Some expressions -> expressions
       | None -> 
@@ -24,21 +33,17 @@ let find_expressions list =
           Hashtbl.add cache key result;
           result 
       in
-
-      let found_expressions = expressions |> List.exists(fun operators ->
+      match expressions |> List.exists(fun operators ->
         sum = List.fold_left2(fun acc operator number ->
           match operator with 
           | "*" -> acc * number
           | "+" -> acc + number
-          | "|" -> int_of_string((string_of_int acc) ^ (string_of_int number))
+          | "|" -> concat_numbers acc number
           | _ -> failwith "invalid operator"
         ) (List.hd numbers) operators (List.tl numbers)
-      ) in
-
-      if found_expressions then
-        Some sum
-      else
-        None
+      ) with
+      | true -> Some sum
+      | false -> None
     ) in
   aux list cache
 
@@ -52,9 +57,7 @@ let run data = data
       numbers
         |> String.trim
         |> String.split_on_char ' '
-        |> List.map(fun string -> (
-          int_of_string string
-        ))
+        |> List.map(fun string -> int_of_string string)
     )
     | _ -> failwith "could not parse sum and numbers"
   ))

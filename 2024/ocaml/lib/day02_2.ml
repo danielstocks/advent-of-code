@@ -21,20 +21,19 @@ let rec is_safe_report ?(prev=None) ?(direction=Unknown) ?(can_dampen_problem=tr
           else
             None
 
-      | Some prev, current, Decr when prev < current ->
-          if can_dampen_problem then
-            is_safe_report ~can_dampen_problem: false ~prev:(Some current) ~direction:Incr xs
-          else
-            None
+      | Some prev, current, Decr when prev < current -> begin
+        match can_dampen_problem with
+        | true -> is_safe_report ~can_dampen_problem: false ~prev:(Some current) ~direction:Incr xs
+        | false -> None
+      end
 
-      (* No previous value or direction, just carry on *)
-      | None, current, Unknown -> 
-          (* Check if we need to dampen first step by looking ahead *)
-          let next = List.hd xs in
-          if safe_step current next then 
-            is_safe_report ~prev:(Some current) xs ~can_dampen_problem
-          else
-            is_safe_report ~prev:None xs ~can_dampen_problem:false
+      (* No previous value or direction *)
+      | None, current, Unknown -> begin
+        (* "Look ahead" and check if first value needs to be dampened? *)
+        match safe_step current (List.hd xs) with 
+        | true -> is_safe_report ~prev:(Some current) xs ~can_dampen_problem
+        | false -> is_safe_report ~prev:None xs ~can_dampen_problem:false
+      end
 
       (* Check if safe to carry on *)
       | Some prev, current, _ ->
