@@ -2,33 +2,32 @@ type direction = Unknown | Incr | Decr
 
 let safe_step a b = abs (b - a) < 4
 
-let rec is_safe_report ?(prev=None) ?(direction=Unknown) list =
-  match list with
+let rec is_safe_report ?(prev=None) ?(direction=Unknown) = function
   | [] ->
-    (* An empty list means safe *)
-    true 
+    true (* An empty list means safe *)
   | current :: xs -> (
-      match (prev, current, direction) with
+    match (prev, current, direction) with
 
-      (* Prev and current values are same? unsafe *)
-      | Some prev, current, _ when prev == current -> false
+    (* Prev and current values are same? unsafe *)
+    | Some prev, current, _ when prev == current -> false
 
-      (* Change in either direction? unsafe *)
-      | Some prev, current, Incr when prev > current -> false
-      | Some prev, current, Decr when prev < current -> false
+    (* Change in either direction? unsafe *)
+    | Some prev, current, Incr when prev > current -> false
+    | Some prev, current, Decr when prev < current -> false
 
-      (* No previous value or direction, just carry on *)
-      | None, current, Unknown -> is_safe_report ~prev:(Some current) xs
+    (* No previous value or direction, just carry on *)
+    | None, current, Unknown -> is_safe_report ~prev:(Some current) xs
 
-      (* Check if safe to carry on *)
-      | Some prev, current, _ ->
-          if safe_step prev current then 
-            is_safe_report ~prev:(Some current) ~direction: (if prev > current then Decr else Incr) xs
-          else false
+    (* Check if safe to carry on *)
+    | Some prev, current, _ when safe_step prev current ->
+      is_safe_report ~prev:(Some current) ~direction: (if prev > current then Decr else Incr) xs
 
-      (* Should never happen? *)
-      | None, _, _-> failwith("can not have a direction w/o a prev value")
-    )
+    (* End of line *)
+    | Some _, _, _ -> false
+
+    (* Should never happen? *)
+    | None, _, _ -> failwith("can not have a direction w/o a prev value")
+  )
 
 let run data =
   data

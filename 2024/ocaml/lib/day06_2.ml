@@ -136,9 +136,9 @@ let run data =
           | (x, y, Right) -> (x, y + 1)
           | (x, y, Left) -> (x, y - 1)
         in
-        if Hashtbl.mem seen (new_x, new_y) then begin
+        if Hashtbl.mem seen (new_x, new_y) then
           infinites
-        end else begin
+        else begin
           Hashtbl.add seen (new_x, new_y) true;
           let new_obstacles = Obstacles.add (new_x, new_y) obstacles in
           if is_infinite_loop
@@ -148,9 +148,8 @@ let run data =
             ~visited:(Hashtbl.create 36000)
           then
             Obstacles.add (new_x, new_y) infinites
-          else begin
+          else
             infinites
-          end
         end
 
       ) Obstacles.empty
